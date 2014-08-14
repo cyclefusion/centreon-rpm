@@ -9,6 +9,8 @@
 %define cent_apache_user    apache
 %define cent_apache_group   apache
 
+AutoReqProv: no
+
 Name:		centreon
 Version:	2.5.2
 Release:	1%{?dist}
@@ -25,7 +27,7 @@ BuildArch:  noarch
 BuildRequires:  centreon-engine
 BuildRequires:  centreon-broker
 Requires:   centreon-engine
-Requires:   centreon-engine-cbmod
+Requires:   centreon-broker-cbmod
 Requires:   centreon-broker
 Requires:	php
 Requires:   php-mbstring
@@ -34,7 +36,7 @@ Requires:   php-xml
 Requires:   php-gd
 Requires:   php-ldap
 Requires:   php-pear-Auth-SASL
-Requires:   php-pear-Archive-Zip
+#Requires:   php-pear-Archive-Zip
 Requires:   php-pear-Date
 Requires:   php-pear-DB-DataObject
 Requires:   php-pear-DB-DataObject-FormBuilder
@@ -49,7 +51,7 @@ Requires:   php-pear-Net-Traceroute
 Requires:   php-pear-Net-Ping
 Requires:   php-pear-SOAP
 Requires:   php-pear-Validate
-Requires:   php-pear-XML-RPC
+#Requires:   php-pear-XML-RPC
 Requires:   httpd
 
 %description
@@ -136,7 +138,6 @@ groupdel %{cent_centreon_group} ||:
 %{cent_global_prefix}/centreon/bin
 %{cent_global_prefix}/centreon/examples
 %{cent_global_prefix}/centreon/libinstall
-%{cent_global_prefix}/centreon/www
 
 %config(noreplace) /etc/cron.d/centreon
 %config(noreplace) /etc/httpd/conf.d/centreon.conf
@@ -157,8 +158,10 @@ groupdel %{cent_centreon_group} ||:
 %attr(0775,%{cent_centreon_user},%{cent_centreon_group}) %dir /var/log/centreon
 
 # setup www
-%attr(0755,%{cent_centreon_user},%{cent_centreon_group}) %{cent_global_prefix}/centreon/GPL_LIB
-%attr(0755,%{cent_centreon_user},%{cent_centreon_group}) %{cent_global_prefix}/centreon/cron
+%defattr(0644,%{cent_centreon_user},%{cent_centreon_group},0755)
+%{cent_global_prefix}/centreon/GPL_LIB
+%{cent_global_prefix}/centreon/cron
+%{cent_global_prefix}/centreon/www
 
 %changelog
 * Thu Aug 14 2014 Florent Peterschmitt <fpeterschmitt@capensis.fr>

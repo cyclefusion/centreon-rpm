@@ -8,9 +8,9 @@ License:	GPL
 URL:		http://centreon.com
 BuildArch:  noarch
 
-Requires:   centreon-nagios-plugins
+Requires:   centreon-plugins-nagios
 Requires:	centreon-engine
-Requires:   centreon-engine-cbmod
+Requires:   centreon-broker-cbmod
 
 %description
 Install a poller with Centreon Engine, Centreon Broker Module and Nagios Plugins
