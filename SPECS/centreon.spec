@@ -13,7 +13,7 @@ AutoReqProv: no
 
 Name:		centreon
 Version:	2.5.2
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	Centreon Web
 
 Group:		Centreon
@@ -66,7 +66,7 @@ groupadd %{cent_centreon_user} ||:
 useradd -g %{cent_centreon_user} -d /var/lib/centreon %{cent_centreon_user} ||:
 
 %build
-./install.sh -f %{SOURCE1} | grep FAIL
+./install.sh -f %{SOURCE1} | grep FAIL > /tmp/%{name}-%{version}-install.log
 
 %install
 mkdir -p %{buildroot}/etc/cron.d/
@@ -106,8 +106,21 @@ usermod -a -G %{cent_centreon_group} %{cent_broker_user}
 service httpd restart
 
 %post
+service mysqld restart
 service httpd restart
 . %{SOURCE2}
+mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)
+chkconfig centcore on
+chkconfig centreontrapd on
+chkconfig snmptrapd on
+service centcore start
+service centreontrapd start
+service snmptrapd start
+
+%preun
+service centcore stop
+service centreontrapd stop
+service snmptrapd stop
 
 %postun
 gpasswd -d %{cent_apache_user} %{cent_centreon_group}
@@ -122,39 +135,38 @@ userdel %{cent_centreon_user}
 groupdel %{cent_centreon_group} ||:
 
 %clean
-#%if 0
-    rm -rf %{buildroot}
-    rm -rf /etc/httpd/conf.d/centreon.conf
-    rm -rf %{cent_global_prefix}/centreon
-    rm -rf %{cent_centreon_etc}
-    rm -rf /var/log/centreon
-    rm -rf /var/lib/centreon
-    rm -rf /var/run/centreon
-    rm -rf /etc/cron.d/centreon
-    rm -rf /var/spool/centreontrapd
-    rm -rf /var/lib/centreon/centplugins
-    rm -rf /usr/share/perl5/vendor_perl/centreon
-    rm -rf /etc/init.d/centcore
-    rm -rf /etc/init.d/centreontrapd
-    gpasswd -d %{cent_apache_user} %{cent_centreon_group}
-    gpasswd -d %{cent_engine_user} %{cent_centreon_group}
-    gpasswd -d %{cent_apache_user} %{cent_engine_group}
-    gpasswd -d %{cent_centreon_user} %{cent_engine_group}
-    gpasswd -d %{cent_apache_user} %{cent_broker_group}
-    gpasswd -d %{cent_engine_user} %{cent_broker_group}
-    gpasswd -d %{cent_broker_user} %{cent_centreon_group}
-    pkill -u -9 %{cent_centreon_user} ||:
-    userdel %{cent_centreon_user}
-    groupdel %{cent_centreon_group} ||:
-#%endif
+rm -rf %{buildroot}
+rm -rf /etc/httpd/conf.d/centreon.conf
+rm -rf %{cent_global_prefix}/centreon
+rm -rf %{cent_centreon_etc}
+rm -rf /var/log/centreon
+rm -rf /var/lib/centreon
+rm -rf /var/run/centreon
+rm -rf /etc/cron.d/centreon
+rm -rf /var/spool/centreontrapd
+rm -rf /var/lib/centreon/centplugins
+rm -rf /usr/share/perl5/vendor_perl/centreon
+rm -rf /etc/init.d/centcore
+rm -rf /etc/init.d/centreontrapd
+gpasswd -d %{cent_apache_user} %{cent_centreon_group}
+gpasswd -d %{cent_engine_user} %{cent_centreon_group}
+gpasswd -d %{cent_apache_user} %{cent_engine_group}
+gpasswd -d %{cent_centreon_user} %{cent_engine_group}
+gpasswd -d %{cent_apache_user} %{cent_broker_group}
+gpasswd -d %{cent_engine_user} %{cent_broker_group}
+gpasswd -d %{cent_broker_user} %{cent_centreon_group}
+pkill -u -9 %{cent_centreon_user} ||:
+userdel %{cent_centreon_user}
+groupdel %{cent_centreon_group} ||:
 
 %files
 %defattr(0755,root,root,-)
 /etc/init.d/centcore
 /etc/init.d/centreontrapd
 
-%defattr(0644,root,root,0755)
+%defattr(0755,root,root,0755)
 %{cent_global_prefix}/centreon/bin
+%defattr(0644,root,root,0755)
 %{cent_global_prefix}/centreon/examples
 %{cent_global_prefix}/centreon/libinstall
 
