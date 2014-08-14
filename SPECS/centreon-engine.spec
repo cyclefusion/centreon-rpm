@@ -74,7 +74,7 @@ userdel %{cent_engine_user}
 groupdel %{cent_engine_group} ||:
 
 %files
-%defattr(0660,%{cent_engine_user},apache,0770)
+%defattr(0660,%{cent_engine_user},%{cent_engine_group},0770)
 %dir %{cent_engine_etc}
 
 %attr(0755,root,root) /etc/init.d/centengine
