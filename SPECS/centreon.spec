@@ -13,7 +13,7 @@ AutoReqProv: no
 
 Name:		centreon
 Version:	2.5.2
-Release:	1%{?dist}
+Release:	3%{?dist}
 Summary:	Centreon Web
 
 Group:		Centreon
@@ -21,11 +21,14 @@ License:	GPL
 URL:		http://centreon.com
 Source0:	%{name}-%{version}.tar.gz
 Source1:    %{name}-%{version}.tmpl
+Source2:    %{name}-%{version}-webinstall.sh
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:  noarch
 
 BuildRequires:  centreon-engine
 BuildRequires:  centreon-broker
+Requires:   curl
+Requires:   httpd
 Requires:   centreon-engine
 Requires:   centreon-broker-cbmod
 Requires:   centreon-broker
@@ -52,7 +55,6 @@ Requires:   php-pear-Net-Ping
 Requires:   php-pear-SOAP
 Requires:   php-pear-Validate
 #Requires:   php-pear-XML-RPC
-Requires:   httpd
 
 %description
 Centreon Web UI
@@ -96,6 +98,10 @@ usermod -a -G %{cent_broker_group} %{cent_apache_user}
 usermod -a -G %{cent_broker_group} %{cent_engine_user}
 usermod -a -G %{cent_centreon_group} %{cent_broker_user}
 service httpd restart
+
+%post
+service httpd restart
+. %{SOURCE2}
 
 %postun
 gpasswd -d %{cent_apache_user} %{cent_centreon_group}
@@ -159,11 +165,12 @@ groupdel %{cent_centreon_group} ||:
 
 # setup www
 %defattr(0644,%{cent_centreon_user},%{cent_centreon_group},0755)
-%{cent_global_prefix}/centreon/GPL_LIB
+%{cent_global_prefix}/centreon/GPL_LIB/*
 %{cent_global_prefix}/centreon/cron
 %{cent_global_prefix}/centreon/www
 
-%attr(0664,%{cent_centreon_user},%{cent_centreon_group},0775) %{cent_global_prefix}/centreon/GPL_LIB/SmartyCache/compile
+%defattr(0664,%{cent_centreon_user},%{cent_centreon_group},0775)
+%{cent_global_prefix}/centreon/GPL_LIB/SmartyCache/compile
 
 %changelog
 * Thu Aug 14 2014 Florent Peterschmitt <fpeterschmitt@capensis.fr>
