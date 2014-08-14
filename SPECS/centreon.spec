@@ -163,6 +163,8 @@ groupdel %{cent_centreon_group} ||:
 %{cent_global_prefix}/centreon/cron
 %{cent_global_prefix}/centreon/www
 
+%attr(0664,%{cent_centreon_user},%{cent_centreon_group},0775) %{cent_global_prefix}/centreon/GPL_LIB/SmartyCache/compile
+
 %changelog
 * Thu Aug 14 2014 Florent Peterschmitt <fpeterschmitt@capensis.fr>
 - Init
