@@ -4,8 +4,8 @@
 %define cent_engine_group   centreon-engine
 
 Name:		centreon-engine
-Version:	1.3.7
-Release:	1%{?dist}
+Version:	1.4.4
+Release:	1.{?dist}
 Summary:	Centreon Engine
 
 Group:		Centreon
@@ -56,6 +56,7 @@ cd build
 make DESTDIR=%{buildroot} install
 mkdir -p %{buildroot}/var/log/centreon-engine
 mkdir -p %{buildroot}/var/lib/centreon-engine/rw
+rm -rf %{buildroot}%{cent_engine_etc}/*
 
 %clean
 rm -rf %{buildroot}
@@ -73,22 +74,12 @@ userdel %{cent_engine_user}
 groupdel %{cent_engine_group} ||:
 
 %files
-%defattr(-,%{cent_engine_user},apache,-)
+%defattr(0660,%{cent_engine_user},apache,0770)
 %dir %{cent_engine_etc}
-%config(noreplace) %{cent_engine_etc}/centengine.cfg
-%config(noreplace) %{cent_engine_etc}/objects/commands.cfg
-%config(noreplace) %{cent_engine_etc}/objects/contacts.cfg
-%config(noreplace) %{cent_engine_etc}/objects/localhost.cfg
-%config(noreplace) %{cent_engine_etc}/objects/printer.cfg
-%config(noreplace) %{cent_engine_etc}/objects/switch.cfg
-%config(noreplace) %{cent_engine_etc}/objects/templates.cfg
-%config(noreplace) %{cent_engine_etc}/objects/timeperiods.cfg
-%config(noreplace) %{cent_engine_etc}/objects/windows.cfg
-%config(noreplace) %{cent_engine_etc}/resource.cfg
 
 %attr(0755,root,root) /etc/init.d/centengine
 
-%attr(0751,%{cent_engine_user},%{cent_engine_group}) /var/log/centreon-engine
+%attr(0770,%{cent_engine_user},%{cent_engine_group}) /var/log/centreon-engine
 %dir /var/lib/centreon-engine
 %attr(2770,%{cent_engine_user},%{cent_engine_group}) /var/lib/centreon-engine/rw
 
