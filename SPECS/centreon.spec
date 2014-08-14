@@ -1,4 +1,5 @@
 %define cent_global_prefix /usr/local/centreon-full/
+%define cent_centreon_etc   /etc/centreon
 %define cent_engine_user    centreon-engine
 %define cent_engine_group   centreon-engine
 %define cent_broker_user    centreon-broker
@@ -66,6 +67,7 @@ useradd -g %{cent_centreon_user} -d /var/lib/centreon %{cent_centreon_user} ||:
 %install
 mkdir -p %{buildroot}/etc/cron.d/
 mkdir -p %{buildroot}/var/run/centreon
+mkdir -p %{buildroot}/var/lib/centreon/centplugins
 mkdir -p %{buildroot}/var/lib/centreon/data
 mkdir -p %{buildroot}/var/lib/centreon/rrd
 mkdir -p %{buildroot}/var/log/centreon
@@ -73,7 +75,11 @@ mkdir -p %{buildroot}/usr/local/centreon-full/
 mkdir -p %{buildroot}/var/spool/centreontrapd
 mkdir -p %{buildroot}/etc/httpd/conf.d/
 rm -rf %{buildroot}%{cent_global_prefix}/centreon/filesGeneration/*
-mv %{cent_global_prefix}/centreon %{buildroot}%{cent_global_prefix}/
+cp -a %{cent_global_prefix}/centreon %{buildroot}%{cent_global_prefix}/
+
+mkdir -p %{buildroot}/$(dirname %{cent_centreon_etc})
+cp -a %{cent_centreon_etc} %{buildroot}/$(dirname %{cent_centreon_etc})
+
 cp /etc/cron.d/centreon %{buildroot}/etc/cron.d/
 cp /etc/httpd/conf.d/centreon.conf %{buildroot}/etc/httpd/conf.d/
 
@@ -102,39 +108,57 @@ userdel %{cent_centreon_user}
 groupdel %{cent_centreon_group} ||:
 
 %clean
-rm -rf %{buildroot}
-rm -rf /etc/httpd/conf.d/centreon.conf
-rm -rf %{cent_global_prefix}/centreon
-rm -rf /etc/centreon
-rm -rf /var/log/centreon
-rm -rf /var/lib/centreon
-rm -rf /var/run/centreon
-rm -rf /etc/cron.d/centreon
-rm -rf /var/spool/centreontrapd
-gpasswd -d %{cent_apache_user} %{cent_centreon_group}
-gpasswd -d %{cent_engine_user} %{cent_centreon_group}
-gpasswd -d %{cent_apache_user} %{cent_engine_group}
-gpasswd -d %{cent_centreon_user} %{cent_engine_group}
-gpasswd -d %{cent_apache_user} %{cent_broker_group}
-gpasswd -d %{cent_engine_user} %{cent_broker_group}
-gpasswd -d %{cent_broker_user} %{cent_centreon_group}
-pkill -u -9 %{cent_centreon_user} ||:
-userdel %{cent_centreon_user}
-groupdel %{cent_centreon_group} ||:
+%if "%{_noclean}" == ""
+    rm -rf %{buildroot}
+    rm -rf /etc/httpd/conf.d/centreon.conf
+    rm -rf %{cent_global_prefix}/centreon
+    rm -rf %{cent_centreon_etc}
+    rm -rf /var/log/centreon
+    rm -rf /var/lib/centreon
+    rm -rf /var/run/centreon
+    rm -rf /etc/cron.d/centreon
+    rm -rf /var/spool/centreontrapd
+    rm -rf /var/lib/centreon/centplugins
+    gpasswd -d %{cent_apache_user} %{cent_centreon_group}
+    gpasswd -d %{cent_engine_user} %{cent_centreon_group}
+    gpasswd -d %{cent_apache_user} %{cent_engine_group}
+    gpasswd -d %{cent_centreon_user} %{cent_engine_group}
+    gpasswd -d %{cent_apache_user} %{cent_broker_group}
+    gpasswd -d %{cent_engine_user} %{cent_broker_group}
+    gpasswd -d %{cent_broker_user} %{cent_centreon_group}
+    pkill -u -9 %{cent_centreon_user} ||:
+    userdel %{cent_centreon_user}
+    groupdel %{cent_centreon_group} ||:
+%endif
 
 %files
-%dir %{cent_global_prefix}/centreon/filesGeneration
-%dir /var/lib/centreon
-%dir /var/lib/centreon/rrd
-%dir /var/log/centreon
-%{cent_global_prefix}/centreon/GPL_LIB
+%defattr(0644,root,root,0755)
 %{cent_global_prefix}/centreon/bin
-%{cent_global_prefix}/centreon/cron
 %{cent_global_prefix}/centreon/examples
 %{cent_global_prefix}/centreon/libinstall
 %{cent_global_prefix}/centreon/www
-/etc/cron.d/centreon
-/etc/httpd/conf.d/centreon.conf
+
+%config(noreplace) /etc/cron.d/centreon
+%config(noreplace) /etc/httpd/conf.d/centreon.conf
+
+# setup configuration files
+%attr(0640,root,%{cent_centreon_group}) %config(noreplace) %{cent_centreon_etc}/*
+
+# setup generation directories
+%attr(0755,root,root) %dir %{cent_global_prefix}/centreon/filesGeneration
+%attr(2770,%{cent_centreon_user},%{cent_centreon_group}) %dir %{cent_global_prefix}/centreon/filesGeneration/broker
+%attr(2770,%{cent_centreon_user},%{cent_centreon_group}) %dir %{cent_global_prefix}/centreon/filesGeneration/nagiosCFG
+
+# setup storages
+%attr(0775,%{cent_centreon_user},%{cent_centreon_group}) %dir /var/lib/centreon
+%attr(0755,root,root) %dir /var/lib/centreon/data
+%attr(0775,%{cent_centreon_user},%{cent_centreon_group}) %dir /var/lib/centreon/centplugins
+%attr(0775,%{cent_centreon_user},%{cent_centreon_group}) %dir /var/lib/centreon/rrd
+%attr(0775,%{cent_centreon_user},%{cent_centreon_group}) %dir /var/log/centreon
+
+# setup www
+%attr(0755,%{cent_centreon_user},%{cent_centreon_group}) %{cent_global_prefix}/centreon/GPL_LIB
+%attr(0755,%{cent_centreon_user},%{cent_centreon_group}) %{cent_global_prefix}/centreon/cron
 
 %changelog
 * Thu Aug 14 2014 Florent Peterschmitt <fpeterschmitt@capensis.fr>

@@ -73,11 +73,11 @@ groupdel %{cent_broker_group} ||:
 %files
 %attr(0755,%{cent_broker_user},%{cent_broker_group}) /var/log/centreon-broker
 %attr(0750,%{cent_broker_user},%{cent_broker_group}) /var/lib/centreon-broker
-%config(noreplace) %attr(0644,root,root) %{cent_broker_etc}/master.run
 %attr(0755,root,root) /etc/init.d/cbd
 %attr(0755,root,root) %{cent_global_prefix}/bin/cbd
-%defattr(0644,root,root,-)
-%{cent_global_prefix}/lib
+%attr(0770,%{cent_broker_user},%{cent_broker_group}) %dir %{cent_broker_etc}
+%config(noreplace) %attr(0644,root,root) %{cent_broker_etc}/master.run
+%attr(0755,root,root) %{cent_global_prefix}/lib
 
 %changelog
 * Thu Aug 14 2014 Florent Peterschmitt <fpeterschmitt@capensis.fr>
