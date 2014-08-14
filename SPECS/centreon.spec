@@ -110,7 +110,7 @@ userdel %{cent_centreon_user}
 groupdel %{cent_centreon_group} ||:
 
 %clean
-%if "%{_noclean}" == ""
+#%if 0
     rm -rf %{buildroot}
     rm -rf /etc/httpd/conf.d/centreon.conf
     rm -rf %{cent_global_prefix}/centreon
@@ -131,7 +131,7 @@ groupdel %{cent_centreon_group} ||:
     pkill -u -9 %{cent_centreon_user} ||:
     userdel %{cent_centreon_user}
     groupdel %{cent_centreon_group} ||:
-%endif
+#%endif
 
 %files
 %defattr(0644,root,root,0755)
