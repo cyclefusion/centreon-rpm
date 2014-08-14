@@ -74,6 +74,8 @@ mkdir -p %{buildroot}/var/run/centreon
 mkdir -p %{buildroot}/var/lib/centreon/centplugins
 mkdir -p %{buildroot}/var/lib/centreon/data
 mkdir -p %{buildroot}/var/lib/centreon/rrd
+mkdir -p %{buildroot}/var/lib/centreon/rrd/metrics
+mkdir -p %{buildroot}/var/lib/centreon/rrd/status
 mkdir -p %{buildroot}/var/log/centreon
 mkdir -p %{buildroot}/usr/local/centreon-full/
 mkdir -p %{buildroot}/var/spool/centreontrapd
