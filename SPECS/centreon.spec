@@ -13,7 +13,7 @@ AutoReqProv: no
 
 Name:		centreon
 Version:	2.5.2
-Release:	3%{?dist}
+Release:	6%{?dist}
 Summary:	Centreon Web
 
 Group:		Centreon
@@ -66,7 +66,7 @@ groupadd %{cent_centreon_user} ||:
 useradd -g %{cent_centreon_user} -d /var/lib/centreon %{cent_centreon_user} ||:
 
 %build
-./install.sh -f %{SOURCE1}
+./install.sh -f %{SOURCE1} | grep FAIL
 
 %install
 mkdir -p %{buildroot}/etc/cron.d/
@@ -149,6 +149,7 @@ groupdel %{cent_centreon_group} ||:
 %config(noreplace) /etc/httpd/conf.d/centreon.conf
 
 # setup configuration files
+%attr(0775,root,%{cent_centreon_group}) %dir %{cent_centreon_etc}
 %attr(0640,root,%{cent_centreon_group}) %config(noreplace) %{cent_centreon_etc}/*
 
 # setup generation directories
@@ -165,12 +166,13 @@ groupdel %{cent_centreon_group} ||:
 
 # setup www
 %defattr(0644,%{cent_centreon_user},%{cent_centreon_group},0755)
-%{cent_global_prefix}/centreon/GPL_LIB/*
+%{cent_global_prefix}/centreon/GPL_LIB
 %{cent_global_prefix}/centreon/cron
 %{cent_global_prefix}/centreon/www
 
-%defattr(0664,%{cent_centreon_user},%{cent_centreon_group},0775)
+%defattr(2664,%{cent_centreon_user},%{cent_centreon_group},2775)
 %{cent_global_prefix}/centreon/GPL_LIB/SmartyCache/compile
+%{cent_global_prefix}/centreon/www/install
 
 %changelog
 * Thu Aug 14 2014 Florent Peterschmitt <fpeterschmitt@capensis.fr>

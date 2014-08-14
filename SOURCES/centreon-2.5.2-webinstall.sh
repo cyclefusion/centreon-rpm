@@ -54,9 +54,9 @@ elif [ ! -z $NDO ]; then
 fi
 
 curl -b /tmp/cicj -XGET "${URL_BASE}/step5.php" > /dev/null 2>&1
-curl -b /tmp/cicj -XPOST "${URL_BASE}/process/process_step5.php" --data "ADMIN_PASSWORD=${LOG_ADMIN_PW}&confirm_password=${LOG_ADMIN_PW}&firstname=${LOG_ADMIN}&lastname=${LOG_ADMIN}&email=root%40localhost" > /dev/null 2>&1
+curl -b /tmp/cicj -XPOST "${URL_BASE}/process/process_step5.php" --data "ADMIN_PASSWORD=${LOG_ADMIN_PW}&confirm_password=${LOG_ADMIN_PW}&firstname=${LOG_ADMIN}&lastname=${LOG_ADMIN}&email=root%40localhost"
 curl -b /tmp/cicj -XGET "${URL_BASE}/step6.php" > /dev/null 2>&1
-curl -b /tmp/cicj -XPOST "${URL_BASE}/process/process_step6.php" --data "ADDRESS=${DB_ADDRESS}&DB_PORT=${DB_PORT}&root_password=${DB_ROOT_PW}&CONFIGURATION_DB=${DB_CONF_NAME}&STORAGE_DB=${DB_STORE_NAME}&UTILS_DB=${DB_UTIL_NAME}&DB_USER=${DB_CENT_USR}&DB_PASS=${DB_CENT_PW}&db_pass_confirm=${DB_CENT_PW}" > /dev/null 2>&1
+curl -b /tmp/cicj -XPOST "${URL_BASE}/process/process_step6.php" --data "ADDRESS=${DB_ADDRESS}&DB_PORT=${DB_PORT}&root_password=${DB_ROOT_PW}&CONFIGURATION_DB=${DB_CONF_NAME}&STORAGE_DB=${DB_STORE_NAME}&UTILS_DB=${DB_UTIL_NAME}&DB_USER=${DB_CENT_USR}&DB_PASS=${DB_CENT_PW}&db_pass_confirm=${DB_CENT_PW}"
 curl -b /tmp/cicj -XGET "${URL_BASE}/step7.php" > /dev/null 2>&1
 curl -b /tmp/cicj -XPOST "${URL_BASE}/process/installConfigurationDb.php" --data ""
 curl -b /tmp/cicj -XPOST "${URL_BASE}/process/installStorageDb.php" --data ""
