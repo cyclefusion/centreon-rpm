@@ -13,7 +13,7 @@ AutoReqProv: no
 
 Name:		centreon
 Version:	2.5.2
-Release:	6%{?dist}
+Release:	7%{?dist}
 Summary:	Centreon Web
 
 Group:		Centreon
@@ -87,6 +87,12 @@ cp -a %{cent_centreon_etc} %{buildroot}/$(dirname %{cent_centreon_etc})
 cp /etc/cron.d/centreon %{buildroot}/etc/cron.d/
 cp /etc/httpd/conf.d/centreon.conf %{buildroot}/etc/httpd/conf.d/
 
+mkdir -p %{buildroot}/usr/share/perl5/vendor_perl/
+cp -r /usr/share/perl5/vendor_perl/centreon %{buildroot}/usr/share/perl5/vendor_perl/
+
+mkdir -p %{buildroot}/etc/init.d
+cp /etc/init.d/centcore /etc/init.d/centreontrapd %{buildroot}/etc/init.d/
+
 %pre
 groupadd %{cent_centreon_user}
 useradd -g %{cent_centreon_user} -d /var/lib/centreon %{cent_centreon_user}
@@ -127,6 +133,9 @@ groupdel %{cent_centreon_group} ||:
     rm -rf /etc/cron.d/centreon
     rm -rf /var/spool/centreontrapd
     rm -rf /var/lib/centreon/centplugins
+    rm -rf /usr/share/perl5/vendor_perl/centreon
+    rm -rf /etc/init.d/centcore
+    rm -rf /etc/init.d/centreontrapd
     gpasswd -d %{cent_apache_user} %{cent_centreon_group}
     gpasswd -d %{cent_engine_user} %{cent_centreon_group}
     gpasswd -d %{cent_apache_user} %{cent_engine_group}
@@ -140,6 +149,10 @@ groupdel %{cent_centreon_group} ||:
 #%endif
 
 %files
+%defattr(0755,root,root,-)
+/etc/init.d/centcore
+/etc/init.d/centreontrapd
+
 %defattr(0644,root,root,0755)
 %{cent_global_prefix}/centreon/bin
 %{cent_global_prefix}/centreon/examples
@@ -173,6 +186,9 @@ groupdel %{cent_centreon_group} ||:
 %defattr(2664,%{cent_centreon_user},%{cent_centreon_group},2775)
 %{cent_global_prefix}/centreon/GPL_LIB/SmartyCache/compile
 %{cent_global_prefix}/centreon/www/install
+
+%defattr(644,root,root,755)
+/usr/share/perl5/vendor_perl/centreon
 
 %changelog
 * Thu Aug 14 2014 Florent Peterschmitt <fpeterschmitt@capensis.fr>
