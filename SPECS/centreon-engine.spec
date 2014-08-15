@@ -18,7 +18,7 @@ BuildRequires:	centreon-clib >= 1.4.0
 BuildRequires:  cmake28
 BuildRequires:  gcc, gcc-c++
 BuildRequires:  zlib-devel, openssl-devel, xerces-c-devel gsoap-devel
-Requires:	centreon-clib < 1.4.0
+Requires:	centreon-clib >= 1.4.0
 Requires:   gsoap
 Requires:   openssl
 Requires:   zlib
@@ -79,8 +79,9 @@ groupdel %{cent_engine_group} ||:
 
 %attr(0755,root,root) /etc/init.d/centengine
 
-%attr(0770,%{cent_engine_user},%{cent_engine_group}) /var/log/centreon-engine
-%dir /var/lib/centreon-engine
+%defattr(0660,%{cent_engine_user},%{cent_engine_group},0770)
+/var/log/centreon-engine
+/var/lib/centreon-engine
 %attr(2770,%{cent_engine_user},%{cent_engine_group}) /var/lib/centreon-engine/rw
 
 %defattr(-,root,root,-)

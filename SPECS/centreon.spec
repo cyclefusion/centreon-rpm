@@ -13,7 +13,7 @@ AutoReqProv: no
 
 Name:		centreon
 Version:	2.5.2
-Release:	9%{?dist}
+Release:	10%{?dist}
 Summary:	Centreon Web
 
 Group:		Centreon
@@ -49,8 +49,8 @@ BuildRequires:   php-pear-Net-Ping
 BuildRequires:   php-pear-SOAP
 BuildRequires:   php-pear-Validate
 # Custom php-pear packages
-Requires:   php-pear-Archive-Zip
-Requires:   php-pear-XML-RPC
+BuildRequires:   php-pear-Archive-Zip
+
 Requires:   curl
 Requires:   httpd
 Requires:   centreon-engine
@@ -79,7 +79,6 @@ Requires:   php-pear-SOAP
 Requires:   php-pear-Validate
 # Custom php-pear packages
 Requires:   php-pear-Archive-Zip
-Requires:   php-pear-XML-RPC
 
 %description
 Centreon Web UI
@@ -91,7 +90,10 @@ groupadd %{cent_centreon_user} ||:
 useradd -g %{cent_centreon_user} -d /var/lib/centreon %{cent_centreon_user} ||:
 
 %build
-./install.sh -f %{SOURCE1} | grep FAIL > /tmp/%{name}-%{version}-install.log
+if [ ! -f %{SOURCE1} ]; then
+    exit 1
+fi
+./install.sh -f %{SOURCE1} # | grep FAIL > /tmp/%{name}-%{version}-install.log
 
 %install
 mkdir -p %{buildroot}/etc/cron.d/
@@ -105,7 +107,8 @@ mkdir -p %{buildroot}/var/log/centreon
 mkdir -p %{buildroot}/usr/local/centreon-full/
 mkdir -p %{buildroot}/var/spool/centreontrapd
 mkdir -p %{buildroot}/etc/httpd/conf.d/
-rm -rf %{buildroot}%{cent_global_prefix}/centreon/filesGeneration/*
+rm -rf %{cent_global_prefix}/centreon/filesGeneration/broker/*
+rm -rf %{cent_global_prefix}/centreon/filesGeneration/nagiosCFG/*
 cp -a %{cent_global_prefix}/centreon %{buildroot}%{cent_global_prefix}/
 
 mkdir -p %{buildroot}/$(dirname %{cent_centreon_etc})
@@ -212,9 +215,12 @@ groupdel %{cent_centreon_group} ||:
 # setup storages
 %attr(0775,%{cent_centreon_user},%{cent_centreon_group}) %dir /var/lib/centreon
 %attr(0755,root,root) %dir /var/lib/centreon/data
-%attr(0775,%{cent_centreon_user},%{cent_centreon_group}) %dir /var/lib/centreon/centplugins
-%attr(0775,%{cent_centreon_user},%{cent_centreon_group}) %dir /var/lib/centreon/rrd
-%attr(0775,%{cent_centreon_user},%{cent_centreon_group}) %dir /var/log/centreon
+%defattr(0660,%{cent_centreon_user},%{cent_centreon_group},0770)
+%dir /var/lib/centreon/centplugins
+%dir /var/lib/centreon/rrd
+%dir /var/lib/centreon/rrd/metrics
+%dir /var/lib/centreon/rrd/status
+%dir /var/log/centreon
 
 # setup www
 %defattr(0644,%{cent_centreon_user},%{cent_centreon_group},0755)
