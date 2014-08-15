@@ -39,7 +39,6 @@ Requires:   php-xml
 Requires:   php-gd
 Requires:   php-ldap
 Requires:   php-pear-Auth-SASL
-#Requires:   php-pear-Archive-Zip
 Requires:   php-pear-Date
 Requires:   php-pear-DB-DataObject
 Requires:   php-pear-DB-DataObject-FormBuilder
@@ -54,7 +53,9 @@ Requires:   php-pear-Net-Traceroute
 Requires:   php-pear-Net-Ping
 Requires:   php-pear-SOAP
 Requires:   php-pear-Validate
-#Requires:   php-pear-XML-RPC
+# Custom php-pear packages
+Requires:   php-pear-Archive-Zip
+Requires:   php-pear-XML-RPC
 
 %description
 Centreon Web UI
