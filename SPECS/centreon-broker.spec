@@ -64,7 +64,7 @@ useradd -g %{cent_broker_group} -m -r -d /var/lib/centreon-broker %{cent_broker_
 
 %preun
 service cbd stop
-pkill -9 -u %{cent_broker_user}
+pkill -9 -u %{cent_broker_user} ||:
 
 %postun
 userdel %{cent_broker_user}

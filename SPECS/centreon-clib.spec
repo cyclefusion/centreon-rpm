@@ -72,6 +72,7 @@ ldconfig
 %{cent_global_prefix}/include/com/centreon/concurrency/write_locker.hh
 %{cent_global_prefix}/include/com/centreon/delayed_delete.hh
 %{cent_global_prefix}/include/com/centreon/exceptions/basic.hh
+%{cent_global_prefix}/include/com/centreon/exceptions/interruption.hh
 %{cent_global_prefix}/include/com/centreon/handle.hh
 %{cent_global_prefix}/include/com/centreon/handle_action.hh
 %{cent_global_prefix}/include/com/centreon/handle_listener.hh
