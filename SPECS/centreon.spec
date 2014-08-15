@@ -27,6 +27,30 @@ BuildArch:  noarch
 
 BuildRequires:  centreon-engine
 BuildRequires:  centreon-broker
+BuildRequires:	php
+BuildRequires:   php-mbstring
+BuildRequires:   php-mysql
+BuildRequires:   php-xml
+BuildRequires:   php-gd
+BuildRequires:   php-ldap
+BuildRequires:   php-pear-Auth-SASL
+BuildRequires:   php-pear-Date
+BuildRequires:   php-pear-DB-DataObject
+BuildRequires:   php-pear-DB-DataObject-FormBuilder
+BuildRequires:   php-pear-HTML-Common
+BuildRequires:   php-pear-HTML-QuickForm
+BuildRequires:   php-pear-HTML-QuickForm-advmultiselect
+BuildRequires:   php-pear-HTML-Table
+BuildRequires:   php-pear-Log
+BuildRequires:   php-pear-Net-SMTP
+BuildRequires:   php-pear-Net-Socket
+BuildRequires:   php-pear-Net-Traceroute
+BuildRequires:   php-pear-Net-Ping
+BuildRequires:   php-pear-SOAP
+BuildRequires:   php-pear-Validate
+# Custom php-pear packages
+Requires:   php-pear-Archive-Zip
+Requires:   php-pear-XML-RPC
 Requires:   curl
 Requires:   httpd
 Requires:   centreon-engine
