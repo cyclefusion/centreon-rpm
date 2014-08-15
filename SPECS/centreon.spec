@@ -80,7 +80,7 @@ Requires:   php-pear-Validate
 Requires:   php-pear-Archive-Zip
 Requires:   centreon-configuration-install
 
-%define install_dir /usr/share/centreon-webui-%{version}/
+%define install_dir /usr/share/centreon-webui-%{version}
 
 %description
 Centreon Web UI
@@ -92,9 +92,6 @@ groupadd %{cent_centreon_user} ||:
 useradd -g %{cent_centreon_user} -d /var/lib/centreon %{cent_centreon_user} ||:
 
 %build
-if [ ! -f %{SOURCE1} ]; then
-    exit 1
-fi
 ./install.sh -f %{install_dir}/template # | grep FAIL > /tmp/%{name}-%{version}-install.log
 
 %install

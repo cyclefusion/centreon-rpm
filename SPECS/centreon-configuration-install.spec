@@ -1,8 +1,9 @@
 %define centreon_version 2.5.2
+%define install_dir /usr/share/centreon-webui-%{centreon_version}/
 %define type_install local
 
 Name:		centreon-configuration-install-%{type_install}
-Version:	1
+Version:	%{centreon_version}
 Release:	1%{?dist}
 Summary:	Template and websetup scripts
 
@@ -18,8 +19,6 @@ Requires:	curl
 Provides:   centreon-configuration-install
 Obsoletes:  centreon-configuration-install
 
-%define install_dir /usr/share/centreon-webui-%{version}/
-
 %description
 Installation template and websetup script for Centreon Web UI.
 
@@ -28,7 +27,7 @@ Installation template and websetup script for Centreon Web UI.
 %build
 
 %install
-mkdir -p %{buildroot}/usr/share/centreon-webui-%{version}/
+mkdir -p %{buildroot}/usr/share/centreon-webui-%{centreon_version}/
 cp %{SOURCE0} %{buildroot}%{install_dir}/template
 cp %{SOURCE1} %{buildroot}%{install_dir}/webinstall.sh
 
