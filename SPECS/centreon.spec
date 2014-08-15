@@ -13,43 +13,42 @@ AutoReqProv: no
 
 Name:		centreon
 Version:	2.5.2
-Release:	10%{?dist}
+Release:	11%{?dist}
 Summary:	Centreon Web
 
 Group:		Centreon
 License:	GPL
 URL:		http://centreon.com
 Source0:	%{name}-%{version}.tar.gz
-Source1:    %{name}-%{version}.tmpl
-Source2:    %{name}-%{version}-webinstall.sh
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:  noarch
 
+BuildRequires:  centreon-configuration-install
 BuildRequires:  centreon-engine
 BuildRequires:  centreon-broker
-BuildRequires:	php
-BuildRequires:   php-mbstring
-BuildRequires:   php-mysql
-BuildRequires:   php-xml
-BuildRequires:   php-gd
-BuildRequires:   php-ldap
-BuildRequires:   php-pear-Auth-SASL
-BuildRequires:   php-pear-Date
-BuildRequires:   php-pear-DB-DataObject
-BuildRequires:   php-pear-DB-DataObject-FormBuilder
-BuildRequires:   php-pear-HTML-Common
-BuildRequires:   php-pear-HTML-QuickForm
-BuildRequires:   php-pear-HTML-QuickForm-advmultiselect
-BuildRequires:   php-pear-HTML-Table
-BuildRequires:   php-pear-Log
-BuildRequires:   php-pear-Net-SMTP
-BuildRequires:   php-pear-Net-Socket
-BuildRequires:   php-pear-Net-Traceroute
-BuildRequires:   php-pear-Net-Ping
-BuildRequires:   php-pear-SOAP
-BuildRequires:   php-pear-Validate
+BuildRequires:  php
+BuildRequires:  php-mbstring
+BuildRequires:  php-mysql
+BuildRequires:  php-xml
+BuildRequires:  php-gd
+BuildRequires:  php-ldap
+BuildRequires:  php-pear-Auth-SASL
+BuildRequires:  php-pear-Date
+BuildRequires:  php-pear-DB-DataObject
+BuildRequires:  php-pear-DB-DataObject-FormBuilder
+BuildRequires:  php-pear-HTML-Common
+BuildRequires:  php-pear-HTML-QuickForm
+BuildRequires:  php-pear-HTML-QuickForm-advmultiselect
+BuildRequires:  php-pear-HTML-Table
+BuildRequires:  php-pear-Log
+BuildRequires:  php-pear-Net-SMTP
+BuildRequires:  php-pear-Net-Socket
+BuildRequires:  php-pear-Net-Traceroute
+BuildRequires:  php-pear-Net-Ping
+BuildRequires:  php-pear-SOAP
+BuildRequires:  php-pear-Validate
 # Custom php-pear packages
-BuildRequires:   php-pear-Archive-Zip
+BuildRequires:  php-pear-Archive-Zip
 
 Requires:   curl
 Requires:   httpd
@@ -79,6 +78,9 @@ Requires:   php-pear-SOAP
 Requires:   php-pear-Validate
 # Custom php-pear packages
 Requires:   php-pear-Archive-Zip
+Requires:   centreon-configuration-install
+
+%define install_dir /usr/share/centreon-webui-%{version}/
 
 %description
 Centreon Web UI
@@ -93,7 +95,7 @@ useradd -g %{cent_centreon_user} -d /var/lib/centreon %{cent_centreon_user} ||:
 if [ ! -f %{SOURCE1} ]; then
     exit 1
 fi
-./install.sh -f %{SOURCE1} # | grep FAIL > /tmp/%{name}-%{version}-install.log
+./install.sh -f %{install_dir}/template # | grep FAIL > /tmp/%{name}-%{version}-install.log
 
 %install
 mkdir -p %{buildroot}/etc/cron.d/
@@ -138,8 +140,7 @@ service httpd restart
 %post
 service mysqld restart
 service httpd restart
-. %{SOURCE2}
-mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)
+. %{install_dir}/webinstall.sh && mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)
 chkconfig centcore on
 chkconfig centreontrapd on
 chkconfig snmptrapd on
