@@ -14,7 +14,7 @@ URL:		http://centreon.com
 Source0:	%{name}-%{version}.tar.gz
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
-BuildRequires:	centreon-clib < 1.4.0
+BuildRequires:	centreon-clib >= 1.4.0
 BuildRequires:  cmake28
 BuildRequires:  gcc, gcc-c++
 BuildRequires:  zlib-devel, openssl-devel, xerces-c-devel gsoap-devel
