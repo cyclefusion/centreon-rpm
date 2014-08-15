@@ -5,7 +5,7 @@
 
 Name:		centreon-engine
 Version:	1.4.4
-Release:	1%{?dist}
+Release:	3%{?dist}
 Summary:	Centreon Engine
 
 Group:		Centreon
@@ -65,9 +65,12 @@ rm -rf %{buildroot}
 groupadd %{cent_engine_group} ||:
 useradd -g %{cent_engine_group} -m -r -d /var/lib/centreon-engine centreon-engine ||:
 
+%post
+chown -R %{cent_engine_user}:%{cent_engine_group} /var/log/centreon-engine
+
 %preun
 service centreon-engine stop ||:
-pkill -9 -u %{cent_engine_user}
+pkill -9 -u %{cent_engine_user} ||:
 
 %postun
 userdel %{cent_engine_user}
