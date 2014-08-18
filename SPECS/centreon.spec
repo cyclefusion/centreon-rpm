@@ -13,7 +13,7 @@ AutoReqProv: no
 
 Name:		centreon
 Version:	2.5.2
-Release:	11%{?dist}
+Release:	12%{?dist}
 Summary:	Centreon Web
 
 Group:		Centreon
@@ -228,6 +228,8 @@ groupdel %{cent_centreon_group} ||:
 
 %defattr(2664,%{cent_centreon_user},%{cent_centreon_group},2775)
 %{cent_global_prefix}/centreon/GPL_LIB/SmartyCache/compile
+
+%defattr(3770,%{cent_apache_user},%{cent_apache_group},3770)
 %{cent_global_prefix}/centreon/www/install
 
 %defattr(644,root,root,755)
