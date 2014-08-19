@@ -11,6 +11,7 @@ BuildArch:  noarch
 Requires:   centreon-plugins-nagios
 Requires:	centreon-engine
 Requires:   centreon-broker-cbmod
+Requires:   centreon-poller-ssh
 
 %description
 Install a poller with Centreon Engine, Centreon Broker Module and Nagios Plugins
