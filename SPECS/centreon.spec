@@ -318,7 +318,16 @@ rm -rf %{cent_global_prefix}/libexec/submit_service_check_result
 %defattr(0644,%{cent_centreon_user},%{cent_centreon_group},0755)
 %{cent_global_prefix}/centreon/GPL_LIB
 %{cent_global_prefix}/centreon/cron
-%{cent_global_prefix}/centreon/www
+%{cent_global_prefix}/centreon/www/class
+%{cent_global_prefix}/centreon/www/img
+%{cent_global_prefix}/centreon/www/include
+%{cent_global_prefix}/centreon/www/lib
+%{cent_global_prefix}/centreon/www/menu
+%{cent_global_prefix}/centreon/www/sounds
+%{cent_global_prefix}/centreon/www/Themes
+%{cent_global_prefix}/centreon/www/widgets
+%{cent_global_prefix}/centreon/www/*.php
+%{cent_global_prefix}/centreon/www/*.txt
 
 %defattr(2664,%{cent_centreon_user},%{cent_centreon_group},2775)
 %{cent_global_prefix}/centreon/GPL_LIB/SmartyCache/compile
