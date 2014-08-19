@@ -11,7 +11,9 @@ if [ ! -z $e_dbconf ]&&[ ! -z $e_dbstore ]&& [ ! -z $e_dbutil ]; then
     exit 2
 else
     echo "Dropping partial databases."
-    echo "drop database $DB_CONF_NAME; drop database $DB_STORE_NAME; drop database $DB_UTIL_NAME;" | mysql -uroot -p${DB_ROOT_PW}
+    echo "drop database $DB_CONF_NAME;" | mysql -uroot -p${DB_ROOT_PW}
+    echo "drop database $DB_STORE_NAME;" | mysql -uroot -p${DB_ROOT_PW}
+    echo "drop database $DB_UTIL_NAME;" | mysql -uroot -p${DB_ROOT_PW}
 fi
 
 curl -s -c /tmp/cicj -XGET "${URL_BASE}/step1.php" > /dev/null
