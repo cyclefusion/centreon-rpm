@@ -9,11 +9,6 @@ e_dbutil=$(echo "show databases;" | mysql -uroot -p${DB_ROOT_PW} | grep "${DB_UT
 if [ ! -z $e_dbconf ]&&[ ! -z $e_dbstore ]&& [ ! -z $e_dbutil ]; then
     echo "This is an upgrade. No webinstall made. Do it yourself and remove install directory in centreon installation."
     exit 2
-else
-    echo "Dropping partial databases."
-    echo "drop database $DB_CONF_NAME;" | mysql -uroot -p${DB_ROOT_PW}
-    echo "drop database $DB_STORE_NAME;" | mysql -uroot -p${DB_ROOT_PW}
-    echo "drop database $DB_UTIL_NAME;" | mysql -uroot -p${DB_ROOT_PW}
 fi
 
 curl -s -c /tmp/cicj -XGET "${URL_BASE}/step1.php" > /dev/null
