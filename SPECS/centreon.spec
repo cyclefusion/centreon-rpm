@@ -13,7 +13,7 @@ AutoReqProv: no
 
 Name:		centreon
 Version:	2.5.2
-Release:	12%{?dist}
+Release:	13%{?dist}
 Summary:	Centreon Web
 
 Group:		Centreon
@@ -96,6 +96,7 @@ useradd -g %{cent_centreon_user} -d /var/lib/centreon %{cent_centreon_user} ||:
 
 %install
 mkdir -p %{buildroot}/etc/cron.d/
+mkdir -p %{buildroot}/etc/httpd/conf.d/
 mkdir -p %{buildroot}/var/run/centreon
 mkdir -p %{buildroot}/var/lib/centreon/centplugins
 mkdir -p %{buildroot}/var/lib/centreon/data
@@ -103,9 +104,8 @@ mkdir -p %{buildroot}/var/lib/centreon/rrd
 mkdir -p %{buildroot}/var/lib/centreon/rrd/metrics
 mkdir -p %{buildroot}/var/lib/centreon/rrd/status
 mkdir -p %{buildroot}/var/log/centreon
-mkdir -p %{buildroot}/usr/local/centreon-full/
 mkdir -p %{buildroot}/var/spool/centreontrapd
-mkdir -p %{buildroot}/etc/httpd/conf.d/
+mkdir -p %{buildroot}%{cent_global_prefix}
 rm -rf %{cent_global_prefix}/centreon/filesGeneration/broker/*
 rm -rf %{cent_global_prefix}/centreon/filesGeneration/nagiosCFG/*
 cp -a %{cent_global_prefix}/centreon %{buildroot}%{cent_global_prefix}/
@@ -119,6 +119,7 @@ cp /etc/httpd/conf.d/centreon.conf %{buildroot}/etc/httpd/conf.d/
 mkdir -p %{buildroot}/usr/share/perl5/vendor_perl/
 cp -r /usr/share/perl5/vendor_perl/centreon %{buildroot}/usr/share/perl5/vendor_perl/
 
+# We install CentCore and CentreonTrapd services, NOT CentStorage.
 mkdir -p %{buildroot}/etc/init.d
 cp /etc/init.d/centcore /etc/init.d/centreontrapd %{buildroot}/etc/init.d/
 
@@ -137,7 +138,30 @@ service httpd restart
 %post
 service mysqld restart
 service httpd restart
-. %{install_dir}/webinstall.sh && mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)
+if [ "$1" = "1" ]&&[ ! -f %{cent_global_prefix}/centreon_webui_no_websetup ]; then
+    echo "Running websetup for initial setup. Few minutes needed."
+    . %{install_dir}/webinstall.sh && mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)
+elif [ -f %{cent_global_prefix}/centreon_webui_no_websetup ]; then
+    echo "%{cent_global_prefix}/centreon_webui_no_websetup exists: no automatic websetup ran. You can run it yourself if you want:"
+    echo ". %{install_dir}/webinstall.sh && mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)"
+else
+    echo "WARNING:"
+    echo "   Websetup not made because of upgrade."
+    echo "   o If it is a primary installation, you can run websetup that way:"
+    echo ". %{install_dir}/webinstall.sh && mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)"
+    echo "   o If it is an upgrade, go to the web interface and follow upgrade process."
+    echo "WEB UPGRADE:"
+    echo "   o Depending of your current installation, SQL scripts can fail to upgrade."
+    echo "   o It *should* be safe to just comment lines that fails and refresh the upgrade to continue."
+    echo "   o However, always do a backup of centreon, centreon_storage and centreon_status *before* doing the upgrade."
+    echo "   o If you messed up your installation, you can safely restore your database backups, remove the package and re-install it."
+    echo "     You'll get some errors about existing database when websetup but it's okay."
+    echo "About the package:"
+    echo "   o This package will *NEVER* delete any database."
+    echo "   o This package will *NEVER* do database upgrades automaticaly."
+    echo "   o This package *CAN* be safely removed and re-installed."
+    echo "   o If you dont want automatic websetup to be run, create this file: %{cent_global_prefix}/centreon_webui_no_websetup"
+fi
 chkconfig centcore on
 chkconfig centreontrapd on
 chkconfig snmptrapd on
