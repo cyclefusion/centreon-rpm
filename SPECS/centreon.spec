@@ -193,6 +193,7 @@ else
     echo "   o However, always do a backup of centreon, centreon_storage and centreon_status *before* doing the upgrade."
     echo "   o If you messed up your installation, you can safely restore your database backups, remove the package and re-install it."
     echo "     You'll get some errors about existing database when websetup but it's okay."
+    echo "   o Once you upgraded all databases and went to the finish message, remove %{cent_global_prefix}/centreon/www/install or you'll loop in upgrade page."
     echo "About the package:"
     echo "   o This package will *NEVER* delete any database."
     echo "   o This package will *NEVER* do database upgrades automaticaly."
