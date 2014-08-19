@@ -13,7 +13,7 @@ AutoReqProv: no
 
 Name:		centreon
 Version:	2.5.2
-Release:	13%{?dist}
+Release:	14%{?dist}
 Summary:	Centreon Web
 
 Group:		Centreon
@@ -88,7 +88,9 @@ Centreon Web UI
 
 %prep
 rm -rf %{buildroot}/*
+
 %setup -q
+
 groupadd %{cent_centreon_user} ||:
 useradd -g %{cent_centreon_user} -d /var/lib/centreon %{cent_centreon_user} ||:
 
@@ -98,15 +100,16 @@ useradd -g %{cent_centreon_user} -d /var/lib/centreon %{cent_centreon_user} ||:
 %install
 mkdir -p %{buildroot}/etc/cron.d/
 mkdir -p %{buildroot}/etc/httpd/conf.d/
-mkdir -p %{buildroot}/var/run/centreon
+mkdir -p %{buildroot}/etc/init.d
 mkdir -p %{buildroot}/var/lib/centreon/centplugins
 mkdir -p %{buildroot}/var/lib/centreon/data
-mkdir -p %{buildroot}/var/lib/centreon/rrd
 mkdir -p %{buildroot}/var/lib/centreon/rrd/metrics
 mkdir -p %{buildroot}/var/lib/centreon/rrd/status
 mkdir -p %{buildroot}/var/log/centreon
+mkdir -p %{buildroot}/var/run/centreon
 mkdir -p %{buildroot}/var/spool/centreontrapd
-mkdir -p %{buildroot}%{cent_global_prefix}
+mkdir -p %{buildroot}%{cent_global_prefix}/libexec
+
 rm -rf %{cent_global_prefix}/centreon/filesGeneration/broker/*
 rm -rf %{cent_global_prefix}/centreon/filesGeneration/nagiosCFG/*
 cp -a %{cent_global_prefix}/centreon %{buildroot}%{cent_global_prefix}/
@@ -121,8 +124,39 @@ mkdir -p %{buildroot}/usr/share/perl5/vendor_perl/
 cp -r /usr/share/perl5/vendor_perl/centreon %{buildroot}/usr/share/perl5/vendor_perl/
 
 # We install CentCore and CentreonTrapd services, NOT CentStorage.
-mkdir -p %{buildroot}/etc/init.d
 cp /etc/init.d/centcore /etc/init.d/centreontrapd %{buildroot}/etc/init.d/
+
+cp -r %{cent_global_prefix}/libexec/Centreon %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/centreon.conf %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/centreon.pm %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_dummy %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_MS_multiple_services %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_ping %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_snmp_cpu %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_snmp_loadaverage %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_snmp_memory %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_snmp_multiple_process %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_snmp_packetErrors %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_snmp_process %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_snmp_process_detailed %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_snmp_remote_storage %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_snmp_string %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_snmp_TcpConn %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_snmp_traffic %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_snmp_uptime %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_snmp_value %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_centreon_snmp_value_table.pl %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_meta_service %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_snmp_cpfw.pl %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_snmp_load.pl %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_snmp_mem.pl %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_snmp_process.pl %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_snmp_script_result.pl %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_snmp_storage.pl %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/check_snmp_win.pl %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/process-service-perfdata %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/submit_host_check_result %{buildroot}%{cent_global_prefix}/libexec/
+cp -r %{cent_global_prefix}/libexec/submit_service_check_result %{buildroot}%{cent_global_prefix}/libexec/
 
 %pre
 groupadd %{cent_centreon_user}
@@ -215,6 +249,38 @@ pkill -u -9 %{cent_centreon_user} ||:
 userdel %{cent_centreon_user}
 groupdel %{cent_centreon_group} ||:
 
+rm -rf %{cent_global_prefix}/libexec/Centreon
+rm -rf %{cent_global_prefix}/libexec/centreon.conf
+rm -rf %{cent_global_prefix}/libexec/centreon.pm
+rm -rf %{cent_global_prefix}/libexec/check_centreon_dummy
+rm -rf %{cent_global_prefix}/libexec/check_centreon_MS_multiple_services
+rm -rf %{cent_global_prefix}/libexec/check_centreon_ping
+rm -rf %{cent_global_prefix}/libexec/check_centreon_snmp_cpu
+rm -rf %{cent_global_prefix}/libexec/check_centreon_snmp_loadaverage
+rm -rf %{cent_global_prefix}/libexec/check_centreon_snmp_memory
+rm -rf %{cent_global_prefix}/libexec/check_centreon_snmp_multiple_process
+rm -rf %{cent_global_prefix}/libexec/check_centreon_snmp_packetErrors
+rm -rf %{cent_global_prefix}/libexec/check_centreon_snmp_process
+rm -rf %{cent_global_prefix}/libexec/check_centreon_snmp_process_detailed
+rm -rf %{cent_global_prefix}/libexec/check_centreon_snmp_remote_storage
+rm -rf %{cent_global_prefix}/libexec/check_centreon_snmp_string
+rm -rf %{cent_global_prefix}/libexec/check_centreon_snmp_TcpConn
+rm -rf %{cent_global_prefix}/libexec/check_centreon_snmp_traffic
+rm -rf %{cent_global_prefix}/libexec/check_centreon_snmp_uptime
+rm -rf %{cent_global_prefix}/libexec/check_centreon_snmp_value
+rm -rf %{cent_global_prefix}/libexec/check_centreon_snmp_value_table.pl
+rm -rf %{cent_global_prefix}/libexec/check_meta_service
+rm -rf %{cent_global_prefix}/libexec/check_snmp_cpfw.pl
+rm -rf %{cent_global_prefix}/libexec/check_snmp_load.pl
+rm -rf %{cent_global_prefix}/libexec/check_snmp_mem.pl
+rm -rf %{cent_global_prefix}/libexec/check_snmp_process.pl
+rm -rf %{cent_global_prefix}/libexec/check_snmp_script_result.pl
+rm -rf %{cent_global_prefix}/libexec/check_snmp_storage.pl
+rm -rf %{cent_global_prefix}/libexec/check_snmp_win.pl
+rm -rf %{cent_global_prefix}/libexec/process-service-perfdata
+rm -rf %{cent_global_prefix}/libexec/submit_host_check_result
+rm -rf %{cent_global_prefix}/libexec/submit_service_check_result
+
 %files
 %defattr(0755,root,root,-)
 /etc/init.d/centcore
@@ -262,6 +328,47 @@ groupdel %{cent_centreon_group} ||:
 
 %defattr(644,root,root,755)
 /usr/share/perl5/vendor_perl/centreon
+
+%package plugins
+Summary:    Centreon Plugins
+Group:      Centreon
+
+%description plugins
+Centreon Plugins
+
+%files plugins
+%defattr(0755,root,root,0755)
+%{cent_global_prefix}/libexec/Centreon
+%{cent_global_prefix}/libexec/centreon.conf
+%{cent_global_prefix}/libexec/centreon.pm
+%{cent_global_prefix}/libexec/check_centreon_dummy
+%{cent_global_prefix}/libexec/check_centreon_MS_multiple_services
+%attr(1755,root,root) %{cent_global_prefix}/libexec/check_centreon_ping
+%{cent_global_prefix}/libexec/check_centreon_snmp_cpu
+%{cent_global_prefix}/libexec/check_centreon_snmp_loadaverage
+%{cent_global_prefix}/libexec/check_centreon_snmp_memory
+%{cent_global_prefix}/libexec/check_centreon_snmp_multiple_process
+%{cent_global_prefix}/libexec/check_centreon_snmp_packetErrors
+%{cent_global_prefix}/libexec/check_centreon_snmp_process
+%{cent_global_prefix}/libexec/check_centreon_snmp_process_detailed
+%{cent_global_prefix}/libexec/check_centreon_snmp_remote_storage
+%{cent_global_prefix}/libexec/check_centreon_snmp_string
+%{cent_global_prefix}/libexec/check_centreon_snmp_TcpConn
+%{cent_global_prefix}/libexec/check_centreon_snmp_traffic
+%{cent_global_prefix}/libexec/check_centreon_snmp_uptime
+%{cent_global_prefix}/libexec/check_centreon_snmp_value
+%{cent_global_prefix}/libexec/check_centreon_snmp_value_table.pl
+%{cent_global_prefix}/libexec/check_meta_service
+%{cent_global_prefix}/libexec/check_snmp_cpfw.pl
+%{cent_global_prefix}/libexec/check_snmp_load.pl
+%{cent_global_prefix}/libexec/check_snmp_mem.pl
+%{cent_global_prefix}/libexec/check_snmp_process.pl
+%{cent_global_prefix}/libexec/check_snmp_script_result.pl
+%{cent_global_prefix}/libexec/check_snmp_storage.pl
+%{cent_global_prefix}/libexec/check_snmp_win.pl
+%{cent_global_prefix}/libexec/process-service-perfdata
+%{cent_global_prefix}/libexec/submit_host_check_result
+%{cent_global_prefix}/libexec/submit_service_check_result
 
 %changelog
 * Thu Aug 14 2014 Florent Peterschmitt <fpeterschmitt@capensis.fr>
