@@ -13,7 +13,7 @@ AutoReqProv: no
 
 Name:		centreon
 Version:	2.5.2
-Release:	14%{?dist}
+Release:	15%{?dist}
 Summary:	Centreon Web
 
 Group:		Centreon
@@ -112,6 +112,7 @@ mkdir -p %{buildroot}%{cent_global_prefix}/libexec
 
 rm -rf %{cent_global_prefix}/centreon/filesGeneration/broker/*
 rm -rf %{cent_global_prefix}/centreon/filesGeneration/nagiosCFG/*
+rm -rf %{cent_global_prefix}/centreon/www/install-[0-9]*
 cp -a %{cent_global_prefix}/centreon %{buildroot}%{cent_global_prefix}/
 
 mkdir -p %{buildroot}/$(dirname %{cent_centreon_etc})
@@ -173,7 +174,7 @@ service httpd restart
 %post
 service mysqld restart
 service httpd restart
-if [ "$1" = "1" ]&&[ ! -f %{cent_global_prefix}/centreon_webui_no_websetup ]; then
+if [ ! "$1" = "2" ]&&[ ! -f %{cent_global_prefix}/centreon_webui_no_websetup ]; then
     echo "Running websetup for initial setup. Few minutes needed."
     . %{install_dir}/webinstall.sh && mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)
 elif [ -f %{cent_global_prefix}/centreon_webui_no_websetup ]; then

@@ -18,6 +18,7 @@ Centreon private SSH keys, used by CentCore.
 
 
 %prep
+mkdir -p %{buildroot}
 
 %build
 
@@ -25,11 +26,11 @@ Centreon private SSH keys, used by CentCore.
 install -d -m0700 -o %{cent_centreon_user} -g %{cent_centreon_group} %{%{buildroot}/var/lib/centreon-engine/.ssh
 cp %{SOURCE0} %{buildroot}/var/lib/centreon-engine/.ssh/authorized_keys
 
-%clean
-rm -rf %{buildroot}
-
 %post
 cat /var/lib/centreon-engine/.ssh/id_rsa-%{name}.pub >> /var/lib/centreon-engine/.ssh
+
+%clean
+rm -rf %{buildroot}
 
 %files
 %defattr(-,%{cent_centreon_user},%{cent_centreon_group},-)
