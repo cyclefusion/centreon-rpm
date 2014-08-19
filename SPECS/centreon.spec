@@ -176,6 +176,9 @@ service centreontrapd stop
 service snmptrapd stop
 
 %postun
+chkconfig centcore off
+chkconfig centreontrapd off
+rm -rf %{cent_centreon_etc}
 gpasswd -d %{cent_apache_user} %{cent_centreon_group}
 gpasswd -d %{cent_engine_user} %{cent_centreon_group}
 gpasswd -d %{cent_apache_user} %{cent_engine_group}
