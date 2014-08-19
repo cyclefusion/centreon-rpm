@@ -13,7 +13,7 @@ AutoReqProv: no
 
 Name:		centreon
 Version:	2.5.2
-Release:	15%{?dist}
+Release:	16%{?dist}
 Summary:	Centreon Web
 
 Group:		Centreon
@@ -176,7 +176,7 @@ service mysqld restart
 service httpd restart
 if [ ! "$1" = "2" ]&&[ ! -f %{cent_global_prefix}/centreon_webui_no_websetup ]; then
     echo "Running websetup for initial setup. Few minutes needed."
-    . %{install_dir}/webinstall.sh && mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)
+    . %{install_dir}/webinstall.sh %{install_dir} && mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)
 elif [ -f %{cent_global_prefix}/centreon_webui_no_websetup ]; then
     echo "%{cent_global_prefix}/centreon_webui_no_websetup exists: no automatic websetup ran. You can run it yourself if you want:"
     echo ". %{install_dir}/webinstall.sh && mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)"
@@ -224,6 +224,9 @@ gpasswd -d %{cent_broker_user} %{cent_centreon_group}
 pkill -u -9 %{cent_centreon_user} ||:
 userdel %{cent_centreon_user}
 groupdel %{cent_centreon_group} ||:
+
+echo "You can drop databases by running this command:"
+echo ". %{install_dir}/webinstall.sh %{install_dir}"
 
 %clean
 rm -rf %{buildroot}
