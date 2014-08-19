@@ -11,9 +11,9 @@
 
 AutoReqProv: no
 
-Name:		centreon
-Version:	2.5.2
-Release:	16%{?dist}
+Name:       centreon
+Version:    2.5.2
+Release:    17%{?dist}
 Summary:	Centreon Web
 
 Group:		Centreon
@@ -119,6 +119,7 @@ mkdir -p %{buildroot}/$(dirname %{cent_centreon_etc})
 cp -a %{cent_centreon_etc} %{buildroot}/$(dirname %{cent_centreon_etc})
 
 cp /etc/cron.d/centreon %{buildroot}/etc/cron.d/
+cp /etc/cron.d/centstorage %{buildroot}/etc/cron.d/
 cp /etc/httpd/conf.d/centreon.conf %{buildroot}/etc/httpd/conf.d/
 
 mkdir -p %{buildroot}/usr/share/perl5/vendor_perl/
@@ -209,24 +210,27 @@ service snmptrapd start
 service centcore stop
 service centreontrapd stop
 service snmptrapd stop
+pkill -u -9 %{cent_centreon_user} ||:
+pkill -u -9 %{cent_engine_user} ||:
+pkill -u -9 %{cent_broker_user} ||:
 
 %postun
-chkconfig centcore off
-chkconfig centreontrapd off
-rm -rf %{cent_centreon_etc}
-gpasswd -d %{cent_apache_user} %{cent_centreon_group}
-gpasswd -d %{cent_engine_user} %{cent_centreon_group}
-gpasswd -d %{cent_apache_user} %{cent_engine_group}
-gpasswd -d %{cent_centreon_user} %{cent_engine_group}
-gpasswd -d %{cent_apache_user} %{cent_broker_group}
-gpasswd -d %{cent_engine_user} %{cent_broker_group}
-gpasswd -d %{cent_broker_user} %{cent_centreon_group}
-pkill -u -9 %{cent_centreon_user} ||:
-userdel %{cent_centreon_user}
-groupdel %{cent_centreon_group} ||:
-
-echo "You can drop databases by running this command:"
-echo ". %{install_dir}/webinstall.sh %{install_dir}"
+if [ ! "$1" = "2" ]; then
+    chkconfig centcore off
+    chkconfig centreontrapd off
+    #rm -rf %{cent_centreon_etc}
+    gpasswd -d %{cent_apache_user} %{cent_centreon_group}
+    gpasswd -d %{cent_engine_user} %{cent_centreon_group}
+    gpasswd -d %{cent_apache_user} %{cent_engine_group}
+    gpasswd -d %{cent_centreon_user} %{cent_engine_group}
+    gpasswd -d %{cent_apache_user} %{cent_broker_group}
+    gpasswd -d %{cent_engine_user} %{cent_broker_group}
+    gpasswd -d %{cent_broker_user} %{cent_centreon_group}
+    userdel %{cent_centreon_user}
+    groupdel %{cent_centreon_group} ||:
+    echo "You can drop databases by running this command:"
+    echo ". %{install_dir}/webinstall.sh %{install_dir}"
+fi
 
 %clean
 rm -rf %{buildroot}
@@ -296,11 +300,13 @@ rm -rf %{cent_global_prefix}/libexec/submit_service_check_result
 %{cent_global_prefix}/centreon/examples
 %{cent_global_prefix}/centreon/libinstall
 
+# Cron, apache
 %config(noreplace) /etc/cron.d/centreon
+%config(noreplace) /etc/cron.d/centstorage
 %config(noreplace) /etc/httpd/conf.d/centreon.conf
 
 # setup configuration files
-%attr(0775,root,%{cent_centreon_group}) %dir %{cent_centreon_etc}
+%attr(0775,root,%{cent_centreon_group}) %config %dir %{cent_centreon_etc}
 %attr(0640,root,%{cent_centreon_group}) %config(noreplace) %{cent_centreon_etc}/*
 
 # setup generation directories
@@ -312,16 +318,17 @@ rm -rf %{cent_global_prefix}/libexec/submit_service_check_result
 %attr(0775,%{cent_centreon_user},%{cent_centreon_group}) %dir /var/lib/centreon
 %attr(0755,root,root) %dir /var/lib/centreon/data
 %defattr(0660,%{cent_centreon_user},%{cent_centreon_group},0770)
-%dir /var/lib/centreon/centplugins
-%dir /var/lib/centreon/rrd
-%dir /var/lib/centreon/rrd/metrics
-%dir /var/lib/centreon/rrd/status
-%dir /var/log/centreon
+/var/lib/centreon/centplugins
+/var/lib/centreon/rrd
+/var/lib/centreon/rrd/metrics
+/var/lib/centreon/rrd/status
+/var/log/centreon
 
 # setup www
-%defattr(0644,%{cent_centreon_user},%{cent_centreon_group},0755)
-%{cent_global_prefix}/centreon/GPL_LIB
-%{cent_global_prefix}/centreon/cron
+%defattr(0644,root,root,0755)
+%{cent_global_prefix}/centreon/GPL_LIB/
+%{cent_global_prefix}/centreon/cron/
+%attr(0755,root,root) %dir %{cent_global_prefix}/centreon/www
 %{cent_global_prefix}/centreon/www/class
 %{cent_global_prefix}/centreon/www/img
 %{cent_global_prefix}/centreon/www/include
@@ -333,11 +340,11 @@ rm -rf %{cent_global_prefix}/libexec/submit_service_check_result
 %{cent_global_prefix}/centreon/www/*.php
 %{cent_global_prefix}/centreon/www/*.txt
 
-%defattr(2664,%{cent_centreon_user},%{cent_centreon_group},2775)
+%defattr(6664,%{cent_centreon_user},%{cent_centreon_group},6775)
 %{cent_global_prefix}/centreon/GPL_LIB/SmartyCache/compile
 
-%defattr(3770,%{cent_apache_user},%{cent_apache_group},3770)
-%{cent_global_prefix}/centreon/www/install
+%defattr(0770,%{cent_apache_user},%{cent_apache_group},6770)
+%{cent_global_prefix}/centreon/www/install/
 
 %defattr(644,root,root,755)
 /usr/share/perl5/vendor_perl/centreon
