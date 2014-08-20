@@ -24,14 +24,14 @@ I focus on creating packages that can give most flexibility for every environmen
 
 For now, I have pretty good results while installing a full centreon installation:
 
- o broker
- o engine
- o plugins
- o ssh keys (but no remote poller)
- o permissions on logs and directories
- o graphes
+ * br*ker
+ * engine
+ * plugins
+ * ssh keys (but n* rem*te p*ller)
+ * permissi*ns *n l*gs and direct*ries
+ * graphes
 
 **To be tested**
 
- o A fresh install
- o Upgrade: could be interesting to take a quite old version, for example 2.4, then upgrade to 2.5.x
+ * A fresh install
+ * Upgrade: could be interesting to take a quite old version, for example 2.4, then upgrade to 2.5.x
