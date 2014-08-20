@@ -55,7 +55,6 @@ Requires:   httpd
 Requires:   centreon-engine
 Requires:   centreon-broker-cbmod
 Requires:   centreon-broker
-Requires:   centreon-central-ssh
 Requires:	php
 Requires:   php-mbstring
 Requires:   php-mysql

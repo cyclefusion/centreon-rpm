@@ -12,6 +12,7 @@ Requires:   centreon-plugins-nagios
 Requires:	centreon-engine
 Requires:   centreon-broker-cbmod
 Requires:   centreon-broker
+Requires:   centreon-configuration-central-ssh
 Requires:   centreon
 
 %description
