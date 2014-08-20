@@ -1,7 +1,8 @@
 %define cent_centreon_user  centreon
 %define cent_centreon_group centreon
+%define cent_configuration  local
 
-Name:		centreon-poller-ssh
+Name:		centreon-poller-ssh-%{cent_configuration}
 Version:	1
 Release:	1%{?dist}
 Summary:	Centreon private SSH keys
@@ -12,6 +13,11 @@ URL:		none
 Source0:	%{name}-rsa-private
 Source1:	%{name}-rsa-public
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+
+#Make another spec/rpm for each configuration, with a meaningful name.
+#At poller install, dont forget to provide your custom package on command line.
+Obsoletes: centreon-central-ssh
+Provides:  centreon-central-ssh
 
 %description
 Centreon private SSH keys, used by CentCore.
