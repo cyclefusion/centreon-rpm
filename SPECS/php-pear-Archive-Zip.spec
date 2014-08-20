@@ -1,19 +1,19 @@
 %define peardir %(pear config-get php_dir 2> /dev/null || echo %{_datadir}/pear)
 %define xmldir  /var/lib/pear
 
-Summary: Zip file management class
-Name: php-pear-Archive-Zip
-Version: 0.1.2
-Release: 1
-License: LGPL
-Group: Development/Libraries
-Source0: http://pear.php.net/get/Archive_Zip-%{version}.tgz
-BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
-URL: http://pear.php.net/package/Archive_Zip
-BuildRequires: php-pear
-Requires:   php-pear
+Summary:    Zip file management class
+Name:       php-pear-Archive-Zip
+Version:    0.1.2
+Release:    1
+License:    LGPL
+Group:      Development/Libraries
+Source0:    http://pear.php.net/get/Archive_Zip-%{version}.tgz
+BuildRoot:  %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
+URL:        http://pear.php.net/package/Archive_Zip
+BuildRequires:  php-pear
+Requires:       php-pear
 
-BuildArch: noarch
+BuildArch:      noarch
 
 %description
 This class provides handling of zip files in PHP.

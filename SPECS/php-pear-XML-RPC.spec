@@ -1,17 +1,17 @@
 %define peardir %(pear config-get php_dir 2> /dev/null || echo %{_datadir}/pear)
 %define xmldir  /var/lib/pear
 
-Summary: PHP implementation of the XML-RPC protocol
-Name: php-pear-XML-RPC
-Version: 1.5.5
-Release: 1
-License: PHP License
-Group: Development/Libraries
-Source0: http://pear.php.net/get/XML_RPC-%{version}.tgz
-BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
-URL: http://pear.php.net/package/XML_RPC
-BuildRequires: php-pear
-Requires:   php-pear
+Summary:    PHP implementation of the XML-RPC protocol
+Name:       php-pear-XML-RPC
+Version:    1.5.5
+Release:    1
+License:    PHP License
+Group:      Development/Libraries
+Source0:    http://pear.php.net/get/XML_RPC-%{version}.tgz
+BuildRoot:  %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
+URL:        http://pear.php.net/package/XML_RPC
+BuildRequires:  php-pear
+Requires:       php-pear
 
 BuildArch: noarch
 
