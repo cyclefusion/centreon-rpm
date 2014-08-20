@@ -28,7 +28,7 @@ mkdir -p %{buildroot}
 %build
 
 %install
-mkdir %{buildroot}/var/lib/centreon-engine/.ssh
+mkdir -p %{buildroot}/var/lib/centreon-engine/.ssh
 cat %{SOURCE0} > %{buildroot}/var/lib/centreon-engine/.ssh/authorized_keys
 
 %post
