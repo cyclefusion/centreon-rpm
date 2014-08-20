@@ -24,11 +24,11 @@ I focus on creating packages that can give most flexibility for every environmen
 
 For now, I have pretty good results while installing a full centreon installation:
 
- * br*ker
+ * broker
  * engine
  * plugins
- * ssh keys (but n* rem*te p*ller)
- * permissi*ns *n l*gs and direct*ries
+ * ssh keys (but no remote poller)
+ * permissions on logs and directories
  * graphes
 
 **To be tested**
