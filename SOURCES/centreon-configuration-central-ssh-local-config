@@ -1,15 +1,15 @@
-# Host:      poller-hostname_or_centreon-configured-name
-# HostName:  poller-real_hostname_or_address
-# User:      poller-monitoring-user
+# Host      poller-hostname_or_centreon-configured-name
+# HostName  poller-real_hostname_or_address
+# User      poller-monitoring-user
 #
 # Example: 
 #   o Our poller is configured with the name "poller007" in Centreon
 #   o Our poller is at real address 172.42.13.37
 #   o Our poller is running under the user centreon-engine
 #
-# Host:     poller007
-# HostName: 172.42.13.37
-# User:     centreon-engine
+# Host      poller007
+# HostName  172.42.13.37
+# User      centreon-engine
 #
 # This configuration is only required when the poller user is not
 # the same user that will connect to the poller.
