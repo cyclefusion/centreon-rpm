@@ -26,7 +26,7 @@ fi
 echo "Setup Broker"
 curl -s -b /tmp/cicj -XGET "${URL_BASE}/step4.php" > /dev/null
 if [ ! -z $CENTBROKER ]; then
-    curl -s -b /tmp/cicj -XPOST "${URL_BASE}/process/process_step4.php" --data "BROKER_MODULE=centreon-broker&CENTREONBROKER_ETC=${CENTREONBROKER_ETC}&CENTREONBROKER_CBMOD=${CENTREONBROKER_CMOD}&CENTREONBROKER_LOG=${CENTREONBROKER_LOG}&CENTREONBROKER_VARLIB=${CENTREONBROKER_VARLIB}&CENTREONBROKER_LIB=${CENTREONBROKER_LIB}" 2> /dev/null
+    curl -s -b /tmp/cicj -XPOST "${URL_BASE}/process/process_step4.php" --data "BROKER_MODULE=centreon-broker&CENTREONBROKER_ETC=${CENTREONBROKER_ETC}&CENTREONBROKER_CBMOD=${CENTREONBROKER_CBMOD}&CENTREONBROKER_LOG=${CENTREONBROKER_LOG}&CENTREONBROKER_VARLIB=${CENTREONBROKER_VARLIB}&CENTREONBROKER_LIB=${CENTREONBROKER_LIB}" 2> /dev/null
 elif [ ! -z $NDO ]; then
     curl -s -b /tmp/cicj -XPOST "${URL_BASE}/process/process_step4.php" --data "BROKER_MODULE=ndoutils&NDOMOD_BINARY=${NDOMOD_BINARY}" 2> /dev/null
 fi
