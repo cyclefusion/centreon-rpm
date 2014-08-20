@@ -4,7 +4,7 @@
 
 Name:		centreon-configuration-install-%{type_install}
 Version:	%{centreon_version}
-Release:	5%{?dist}
+Release:	6%{?dist}
 Summary:	Template and websetup scripts
 
 Group:		Centreon
