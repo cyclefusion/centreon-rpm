@@ -10,13 +10,14 @@ Summary:	Centreon private SSH keys
 Group:		Centreon
 License:	None
 URL:		none
-Source0:	%{name}-rsa-public
+Source0:	%{name}-authorized_keys
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+BuildArch:  noarch
 
 #Make another spec/rpm for each configuration, with a meaningful name.
 #At poller install, dont forget to provide your custom package on command line.
-Obsoletes: centreon-central-ssh
-Provides:  centreon-central-ssh
+Obsoletes: centreon-poller-ssh
+Provides:  centreon-poller-ssh
 
 %description
 Centreon private SSH keys, used by CentCore.
