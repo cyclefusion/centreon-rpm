@@ -13,7 +13,6 @@ CENTREON_ENGINE_STATS_BINARY=$(echo "/usr/local/centreon-full/bin/centenginestat
 MONITORING_VAR_LIB=$(echo "/var/lib/centreon-engine/" | sed 's/\//%2F/g')
 CENTREON_ENGINE_CONNECTORS=$(echo "/usr/local/centreon-full/lib/" | sed 's/\//%2F/g')
 CENTREON_ENGINE_LIB=$(echo "/usr/local/centreon-full/lib/centreon-engine/" | sed 's/\//%2F/g')
-BROKER_MODULE=centreon-broker
 CENTREONBROKER_ETC=$(echo "/etc/centreon-broker/" | sed 's/\//%2F/g')
 CENTREONBROKER_CBMOD=$(echo "/usr/local/centreon-full/lib/cbmod.so" | sed 's/\//%2F/g')
 CENTREONBROKER_LOG=$(echo "/var/log/centreon-broker/" | sed 's/\//%2F/g')
