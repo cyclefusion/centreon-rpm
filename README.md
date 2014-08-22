@@ -1,26 +1,29 @@
 # Centreon packages
 
-Packages are available at http://repos.beastie.eu/CentOS6-x86_64-centreon/
+Packages are available at http://repos.beastie.eu/CentOS6-x86_64-centreo/n
 
-You can create a custom repo file in `/etc/yum.repos.d/`:
-
+```bash
+wget http://repos.beastie.eu/CentOS6-x86_64-centreon/noarch/centreon-release-1-1.el6.noarch.rpm
+rpm -i centreon-release-1-1.el6.noarch.rpm
+yum update
 ```
-[CentOS6-x86_64-centreon]
-name=CentOS6-x86_64-centreon
-baseurl=http://repos.beastie.eu/CentOS6-x86_64-centreon/
-gpgcheck=0
-enabled=1
-```
-
-First, be sure to have a **working** MySQL database. I mean, `mysql_secure_installation` is ok and the `root password` is the same as defined in the install package `centreon-configuration-install-<install type>`.
 
 ## How to install a complete centreon
+
+First, be sure to have a **working** MySQL database. I mean, `mysql_secure_installation` is ok and the `root password` is the same as defined in the install package `centreon-configuration-install-<install type>`.
 
 ```bash
 yum install meta-centreon-central centreon-configuration-install-<install type>
 ```
 
 Where `<install type>` is your custom (or not) package that installs scripts you have modified for your environment : remote MySQL database, custom passwords...
+
+Then, ensure these services are started:
+
+ * centcore
+ * postfix
+ * httpd
+ * mysqld
 
 ## Issues
 
@@ -46,4 +49,5 @@ For now, I have pretty good results while installing a full centreon installatio
 **To be tested**
 
  * A fresh install
+ * Pollers
  * Upgrade: could be interesting to take a quite old version, for example 2.4, then upgrade to 2.5.x
