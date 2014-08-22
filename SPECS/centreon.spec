@@ -13,7 +13,7 @@ AutoReqProv: no
 
 Name:       centreon
 Version:    2.5.2
-Release:    18%{?dist}
+Release:    19%{?dist}
 Summary:    Centreon Web
 
 Group:      Centreon
@@ -119,6 +119,12 @@ mkdir -p %{buildroot}/var/log/centreon
 mkdir -p %{buildroot}/var/run/centreon
 mkdir -p %{buildroot}/var/spool/centreontrapd
 mkdir -p %{buildroot}%{cent_global_prefix}/libexec
+mkdir -p %{buildroot}/etc/sudoers.d
+
+sudo_start=$(grep -n "BEGIN: CENTREON SUDO" /etc/sudoers|cut -f1 -d:)
+sudo_end=$(grep -n "END: CENTREON_SUDO" /etc/sudoers|cut -f1 -d:)
+
+sed -n ${sudo_start},${sudo_end}p /etc/sudoers > %{buildroot}/etc/sudoers.d/centreon
 
 rm -rf %{cent_global_prefix}/centreon/filesGeneration/broker/*
 rm -rf %{cent_global_prefix}/centreon/filesGeneration/nagiosCFG/*
@@ -312,10 +318,11 @@ rm -rf %{cent_global_prefix}/libexec/submit_service_check_result
 %{cent_global_prefix}/centreon/examples
 %{cent_global_prefix}/centreon/libinstall
 
-# Cron, apache
+# Cron, apache, sudo
 %config(noreplace) /etc/cron.d/centreon
 %config(noreplace) /etc/cron.d/centstorage
 %config(noreplace) /etc/httpd/conf.d/centreon.conf
+%attr(0640,root,root) /etc/sudoers.d/centreon
 
 # setup configuration files
 %attr(0775,root,%{cent_centreon_group}) %config %dir %{cent_centreon_etc}
