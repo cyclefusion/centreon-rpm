@@ -13,16 +13,21 @@ AutoReqProv: no
 
 Name:       centreon
 Version:    2.5.2
-Release:    17%{?dist}
-Summary:	Centreon Web
+Release:    18%{?dist}
+Summary:    Centreon Web
 
-Group:		Centreon
-License:	GPL
-URL:		http://centreon.com
-Source0:	%{name}-%{version}.tar.gz
-BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+Group:      Centreon
+License:    GPL
+URL:        http://centreon.com
+Source0:    %{name}-%{version}.tar.gz
+BuildRoot:  %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:  noarch
 
+BuildRequires:	mailx
+BuildRequires:	postfix
+BuildRequires:  cronie
+BuildRequires:  sudo
+BuildRequires:  net-snmp
 BuildRequires:  centreon-configuration-install
 BuildRequires:  centreon-engine
 BuildRequires:  centreon-broker
@@ -50,12 +55,18 @@ BuildRequires:  php-pear-Validate
 # Custom php-pear packages
 BuildRequires:  php-pear-Archive-Zip
 
+Requires:   mailx
+Requires:   postfix
+Requires:   cronie
+Requires:   net-snmp
+# XXX: configure sudoers file from package's scripts
+Requires:   sudo
 Requires:   curl
 Requires:   httpd
 Requires:   centreon-engine
 Requires:   centreon-broker-cbmod
 Requires:   centreon-broker
-Requires:	php
+Requires:   php
 Requires:   php-mbstring
 Requires:   php-mysql
 Requires:   php-xml

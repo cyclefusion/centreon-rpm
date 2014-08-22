@@ -4,8 +4,8 @@
 %define cent_engine_group   centreon-engine
 
 Name:		centreon-engine
-Version:	1.4.4
-Release:	3%{?dist}
+Version:	1.4.6
+Release:	1%{?dist}
 Summary:	Centreon Engine
 
 Group:		Centreon
@@ -57,6 +57,7 @@ make DESTDIR=%{buildroot} install
 mkdir -p %{buildroot}/var/log/centreon-engine
 mkdir -p %{buildroot}/var/lib/centreon-engine/rw
 rm -rf %{buildroot}%{cent_engine_etc}/*
+mkdir %{buildroot}%{cent_global_prefix}/libexec
 
 %clean
 rm -rf %{buildroot}
@@ -92,6 +93,8 @@ groupdel %{cent_engine_group} ||:
 %{cent_global_prefix}/bin
 %{cent_global_prefix}/include/centreon-engine
 %{cent_global_prefix}/lib/centreon-engine
+
+%attr(0755,root,root) %dir %{cent_global_prefix}/libexec
 
 %changelog
 * Thu Aug 14 2014 Florent Peterschmitt <fpeterschmitt@capensis.fr>

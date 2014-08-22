@@ -4,8 +4,8 @@
 %define cent_broker_group   centreon-broker
 
 Name:		centreon-broker
-Version:	2.6.2
-Release:	2%{?dist}
+Version:	2.6.3
+Release:	1%{?dist}
 Summary:	Centreon Broker
 
 Group:		Centreon
