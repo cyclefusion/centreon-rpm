@@ -1,0 +1,5 @@
+[centreon-repos.beastie.eu]
+name=centreon-repos.beastie.eu
+baseurl=http://repos.beastie.eu/CentOS6-$basearch-centreon/
+enabled=1
+gpgcheck=0
