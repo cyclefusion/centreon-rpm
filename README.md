@@ -1,6 +1,6 @@
 # Centreon packages
 
-Packages are available at http://repos.beastie.eu/CentOS6-x86_64-centreo/n
+Packages are available at http://repos.beastie.eu/CentOS6-x86_64-centreo/
 
 ```bash
 wget http://repos.beastie.eu/CentOS6-x86_64-centreon/noarch/centreon-release-1-1.el6.noarch.rpm
