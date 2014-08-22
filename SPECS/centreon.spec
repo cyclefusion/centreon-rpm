@@ -252,6 +252,7 @@ rm -rf /var/log/centreon
 rm -rf /var/lib/centreon
 rm -rf /var/run/centreon
 rm -rf /etc/cron.d/centreon
+rm -rf /etc/cron.d/centstorage
 rm -rf /var/spool/centreontrapd
 rm -rf /var/lib/centreon/centplugins
 rm -rf /usr/share/perl5/vendor_perl/centreon
