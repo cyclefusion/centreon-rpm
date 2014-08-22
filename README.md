@@ -1,5 +1,17 @@
 # Centreon packages
 
+Packages are available at http://repos.beastie.eu/CentOS6-x86_64-centreon/
+
+You can create a custom repo file in `/etc/yum.repos.d/`:
+
+```
+[CentOS6-x86_64-centreon]
+name=CentOS6-x86_64-centreon
+baseurl=http://repos.beastie.eu/CentOS6-x86_64-centreon/
+gpgcheck=0
+enabled=1
+```
+
 First, be sure to have a **working** MySQL database. I mean, `mysql_secure_installation` is ok and the `root password` is the same as defined in the install package `centreon-configuration-install-<install type>`.
 
 ## How to install a complete centreon
