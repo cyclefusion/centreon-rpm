@@ -5,7 +5,7 @@
 
 Name:		centreon-broker
 Version:	2.6.3
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	Centreon Broker
 
 Group:		Centreon

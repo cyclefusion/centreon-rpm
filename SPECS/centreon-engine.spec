@@ -5,7 +5,7 @@
 
 Name:		centreon-engine
 Version:	1.4.6
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	Centreon Engine
 
 Group:		Centreon

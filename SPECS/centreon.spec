@@ -11,7 +11,7 @@
 
 Name:       centreon
 Version:    2.5.2
-Release:    20%{?dist}
+Release:    21%{?dist}
 Summary:    Centreon Web
 
 Group:      Centreon
