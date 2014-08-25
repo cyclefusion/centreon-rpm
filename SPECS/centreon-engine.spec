@@ -5,7 +5,7 @@
 
 Name:		centreon-engine
 Version:	1.4.6
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Centreon Engine
 
 Group:		Centreon
@@ -68,10 +68,12 @@ useradd -g %{cent_engine_group} -m -r -d /var/lib/centreon-engine centreon-engin
 
 %post
 chown -R %{cent_engine_user}:%{cent_engine_group} /var/log/centreon-engine
+chkconfig centengine on
 
 %preun
 service centreon-engine stop ||:
 pkill -9 -u %{cent_engine_user} ||:
+chkconfig centengine off
 
 %postun
 userdel %{cent_engine_user}

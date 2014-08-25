@@ -5,7 +5,7 @@
 
 Name:		centreon-broker
 Version:	2.6.3
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Centreon Broker
 
 Group:		Centreon
@@ -62,9 +62,13 @@ rm -rf %{buildroot}
 groupadd %{cent_broker_user} ||:
 useradd -g %{cent_broker_group} -m -r -d /var/lib/centreon-broker %{cent_broker_user} ||:
 
+%post
+chkconfig cbd on
+
 %preun
 service cbd stop ||:
 pkill -9 -u %{cent_broker_user} ||:
+chkconfig cbd off
 
 %postun
 userdel %{cent_broker_user}

@@ -13,7 +13,7 @@ AutoReqProv: no
 
 Name:       centreon
 Version:    2.5.2
-Release:    19%{?dist}
+Release:    20%{?dist}
 Summary:    Centreon Web
 
 Group:      Centreon
@@ -216,6 +216,8 @@ else
     echo "   o This package *CAN* be safely removed and re-installed."
     echo "   o If you dont want automatic websetup to be run, create this file: %{cent_global_prefix}/centreon_webui_no_websetup"
 fi
+chkconfig httpd on
+chkconfig mysqld on
 chkconfig centcore on
 chkconfig centreontrapd on
 chkconfig snmptrapd on
