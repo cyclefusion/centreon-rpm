@@ -24,22 +24,16 @@ rm -rf %{buildroot}/*
 mkdir -p %{buildroot}/etc/sudoers.d
 %{__cat} >> %{buildroot}/etc/sudoers.d/centreon-poller << EOF
 ## BEGIN: CENTREONPOLLER SUDO
-#Add by CENTREONPOLLER installation script
 User_Alias      CENTREONPOLLER=centreon-engine
 Defaults:CENTREONPOLLER !requiretty
-# Monitoring engine Restart
 CENTREONPOLLER   ALL = NOPASSWD: /etc/init.d/centengine* restart
 CENTREONPOLLER   ALL = NOPASSWD: /etc/init.d/centengine restart
-# Monitoring engine reload
 CENTREONPOLLER   ALL = NOPASSWD: /etc/init.d/centengine* reload
 CENTREONPOLLER   ALL = NOPASSWD: /etc/init.d/centengine reload
-# Monitoring engine force-reload
 CENTREONPOLLER   ALL = NOPASSWD: /etc/init.d/centengine* force-reload
 CENTREONPOLLER   ALL = NOPASSWD: /etc/init.d/centengine force-reload
-# Monitoring engine test config
 CENTREONPOLLER   ALL = NOPASSWD: /usr/local/centreon-full/bin/centengine* -v *
 CENTREONPOLLER   ALL = NOPASSWD: /usr/local/centreon-full/bin/centengine -v *
-# Monitoring engine test for optim config
 CENTREONPOLLER   ALL = NOPASSWD: /usr/local/centreon-full/bin/centengine* -s *
 CENTREONPOLLER   ALL = NOPASSWD: /usr/local/centreon-full/bin/centengine -s *
 EOF
