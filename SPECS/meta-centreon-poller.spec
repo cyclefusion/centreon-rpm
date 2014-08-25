@@ -8,11 +8,11 @@ License:	GPL
 URL:		http://centreon.com
 BuildArch:  noarch
 
-Requires:   sudo
 Requires:   centreon-plugins-nagios
-Requires:	centreon-engine
+Requires:   centreon-engine
 Requires:   centreon-broker-cbmod
 Requires:   centreon-configuration-poller-ssh
+Requires:   centreon-configuration-poller-sudo
 
 %description
 Install a poller with Centreon Engine, Centreon Broker Module and Nagios Plugins

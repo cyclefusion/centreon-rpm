@@ -16,3 +16,7 @@
 # It will always be the case with these packages:
 #   o Centreon connects with user "centreon"
 #   o MonitoringEngine runs with user "centreon-engine"
+
+Host        127.0.1.1
+HostName    127.0.1.1
+User        centreon-engine
