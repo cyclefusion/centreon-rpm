@@ -21,6 +21,7 @@ BuildRequires:  gnutls-devel
 BuildRequires:  rrdtool-devel
 BuildRequires:  make
 BuildRequires:  centreon-clib
+Requires:   redhat-lsb-core
 Requires:	qt-mysql >= 4.7.4
 Requires:   qt-x11 >= 4.7.4
 Requires:   rrdtool

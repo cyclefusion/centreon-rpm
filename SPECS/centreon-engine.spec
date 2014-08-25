@@ -18,6 +18,7 @@ BuildRequires:	centreon-clib >= 1.4.0
 BuildRequires:  cmake28
 BuildRequires:  gcc, gcc-c++
 BuildRequires:  zlib-devel, openssl-devel, xerces-c-devel gsoap-devel
+Requires:   redhat-lsb-core
 Requires:	centreon-clib >= 1.4.0
 Requires:   gsoap
 Requires:   openssl

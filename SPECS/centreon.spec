@@ -9,8 +9,6 @@
 %define cent_apache_user    apache
 %define cent_apache_group   apache
 
-AutoReqProv: no
-
 Name:       centreon
 Version:    2.5.2
 Release:    20%{?dist}
@@ -55,6 +53,9 @@ BuildRequires:  php-pear-Validate
 # Custom php-pear packages
 BuildRequires:  php-pear-Archive-Zip
 
+AutoReqProv: no
+
+Requires:   redhat-lsb-core
 Requires:   mailx
 Requires:   postfix
 Requires:   cronie
@@ -228,9 +229,7 @@ service snmptrapd start
 service centcore stop
 service centreontrapd stop
 service snmptrapd stop
-pkill -u -9 %{cent_centreon_user} ||:
-pkill -u -9 %{cent_engine_user} ||:
-pkill -u -9 %{cent_broker_user} ||:
+pkill -9 -u %{cent_centreon_user} ||:
 
 %postun
 if [ ! "$1" = "2" ]; then
@@ -272,7 +271,7 @@ gpasswd -d %{cent_centreon_user} %{cent_engine_group}
 gpasswd -d %{cent_apache_user} %{cent_broker_group}
 gpasswd -d %{cent_engine_user} %{cent_broker_group}
 gpasswd -d %{cent_broker_user} %{cent_centreon_group}
-pkill -u -9 %{cent_centreon_user} ||:
+pkill -9 -u %{cent_centreon_user} ||:
 userdel %{cent_centreon_user}
 groupdel %{cent_centreon_group} ||:
 
@@ -372,6 +371,12 @@ rm -rf %{cent_global_prefix}/libexec/submit_service_check_result
 %package plugins
 Summary:    Centreon Plugins
 Group:      Centreon
+
+AutoReqProv: no
+Requires:   perl(utils)
+Requires:   perl(Config::IniFiles)
+Requires:   perl(IO::Scalar)
+Requires:   perl(List::MoreUtils)
 
 %description plugins
 Centreon Plugins
