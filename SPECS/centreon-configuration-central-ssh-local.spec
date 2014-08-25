@@ -3,16 +3,16 @@
 %define cent_centreon_group centreon
 %define cent_configuration  local
 
-Name:		%{_basename}-%{cent_configuration}
-Version:	1
-Release:	1%{?dist}
-Summary:	Centreon private SSH keys
-Group:		Centreon
+Name:       %{_basename}-%{cent_configuration}
+Version:    1
+Release:    2%{?dist}
+Summary:    Centreon private SSH keys
+Group:      Centreon
 License:    none
-Source0:	%{name}-rsa-private
-Source1:	%{name}-rsa-public
-Source3:    %{name}-config
-BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+Source0:    %{name}-rsa
+Source1:    %{name}-rsa.pub
+Source2:    %{name}-config
+BuildRoot:  %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:  noarch
 
 #Make another spec/rpm for each configuration, with a meaningful name.
@@ -28,6 +28,9 @@ Centreon private SSH keys, used by CentCore.
 
 %prep
 mkdir -p %{buildroot}
+if [ ! -f %{SOURCE0} ]; then
+	ssh-keygen -t rsa -b 2048 -N "" -f %{SOURCE0}
+fi
 
 %build
 
@@ -36,7 +39,7 @@ mkdir -p %{buildroot}/var/lib/centreon/.ssh
 cp %{SOURCE0} %{buildroot}/var/lib/centreon/.ssh/id_rsa
 cp %{SOURCE1} %{buildroot}/var/lib/centreon/.ssh/id_rsa.pub
 # ssh config can be used to define custom logins
-cp %{SOURCE3} %{buildroot}/var/lib/centreon/.ssh/config
+cp %{SOURCE2} %{buildroot}/var/lib/centreon/.ssh/config
 
 %clean
 rm -rf %{buildroot}
