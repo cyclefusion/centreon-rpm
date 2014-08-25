@@ -111,6 +111,7 @@ useradd -g %{cent_centreon_user} -d /var/lib/centreon %{cent_centreon_user} ||:
 mkdir -p %{buildroot}/etc/cron.d/
 mkdir -p %{buildroot}/etc/httpd/conf.d/
 mkdir -p %{buildroot}/etc/init.d
+mkdir -p %{buildroot}/etc/sudoers.d
 mkdir -p %{buildroot}/var/lib/centreon/centplugins
 mkdir -p %{buildroot}/var/lib/centreon/data
 mkdir -p %{buildroot}/var/lib/centreon/rrd/metrics
@@ -119,12 +120,12 @@ mkdir -p %{buildroot}/var/log/centreon
 mkdir -p %{buildroot}/var/run/centreon
 mkdir -p %{buildroot}/var/spool/centreontrapd
 mkdir -p %{buildroot}%{cent_global_prefix}/libexec
-mkdir -p %{buildroot}/etc/sudoers.d
 
 sudo_start=$(grep -n "BEGIN: CENTREON SUDO" /etc/sudoers|cut -f1 -d:)
-sudo_end=$(grep -n "END: CENTREON_SUDO" /etc/sudoers|cut -f1 -d:)
-
+sudo_end=$(grep -n "END: CENTREON SUDO" /etc/sudoers|cut -f1 -d:)
+ 
 sed -n ${sudo_start},${sudo_end}p /etc/sudoers > %{buildroot}/etc/sudoers.d/centreon
+sed ${sudo_start},${sudo_end}d -i /etc/sudoers
 
 rm -rf %{cent_global_prefix}/centreon/filesGeneration/broker/*
 rm -rf %{cent_global_prefix}/centreon/filesGeneration/nagiosCFG/*
