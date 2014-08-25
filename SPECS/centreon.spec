@@ -59,13 +59,13 @@ Requires:   mailx
 Requires:   postfix
 Requires:   cronie
 Requires:   net-snmp
-# XXX: configure sudoers file from package's scripts
 Requires:   sudo
 Requires:   curl
 Requires:   httpd
 Requires:   centreon-engine
 Requires:   centreon-broker-cbmod
 Requires:   centreon-broker
+Requires:   perl-DBD-MySQL
 Requires:   php
 Requires:   php-mbstring
 Requires:   php-mysql
@@ -190,7 +190,6 @@ usermod -a -G %{cent_centreon_group} %{cent_broker_user}
 service httpd restart
 
 %post
-service mysqld restart
 service httpd restart
 if [ ! "$1" = "2" ]&&[ ! -f %{cent_global_prefix}/centreon_webui_no_websetup ]; then
     echo "Running websetup for initial setup. Few minutes needed."
@@ -218,7 +217,6 @@ else
     echo "   o If you dont want automatic websetup to be run, create this file: %{cent_global_prefix}/centreon_webui_no_websetup"
 fi
 chkconfig httpd on
-chkconfig mysqld on
 chkconfig centcore on
 chkconfig centreontrapd on
 chkconfig snmptrapd on
