@@ -1,6 +1,6 @@
 Name:		meta-centreon-poller
 Version:	1
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:    Install a poller with Centreon Engine, Centreon Broker Module and Nagios Plugins
 
 Group:		Centreon
@@ -8,6 +8,7 @@ License:	GPL
 URL:		http://centreon.com
 BuildArch:  noarch
 
+Requires:   sudo
 Requires:   centreon-plugins-nagios
 Requires:	centreon-engine
 Requires:   centreon-broker-cbmod
