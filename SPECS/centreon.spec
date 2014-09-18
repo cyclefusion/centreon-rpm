@@ -193,30 +193,34 @@ service httpd restart
 %post
 service httpd restart
 if [ ! "$1" = "2" ]&&[ ! -f %{cent_global_prefix}/centreon_webui_no_websetup ]; then
-    echo "Running websetup for initial setup. Few minutes needed."
+    echo "Running websetup for initial setup. Few minutes needed." 1>&2
     . %{install_dir}/webinstall.sh %{install_dir} && mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)
 elif [ -f %{cent_global_prefix}/centreon_webui_no_websetup ]; then
-    echo "%{cent_global_prefix}/centreon_webui_no_websetup exists: no automatic websetup ran. You can run it yourself if you want:"
-    echo ". %{install_dir}/webinstall.sh && mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)"
+    echo "%{cent_global_prefix}/centreon_webui_no_websetup exists: no automatic websetup ran. You can run it yourself if you want:" 1>&2
+    echo ". %{install_dir}/webinstall.sh && mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)" 1>&2
 else
-    echo "WARNING:"
-    echo "   Websetup not made because of upgrade."
-    echo "   o If it is a primary installation, you can run websetup that way:"
-    echo ". %{install_dir}/webinstall.sh && mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)"
-    echo "   o If it is an upgrade, go to the web interface and follow upgrade process."
-    echo "WEB UPGRADE:"
-    echo "   o Depending of your current installation, SQL scripts can fail to upgrade."
-    echo "   o It *should* be safe to just comment lines that fails and refresh the upgrade to continue."
-    echo "   o However, always do a backup of centreon, centreon_storage and centreon_status *before* doing the upgrade."
-    echo "   o If you messed up your installation, you can safely restore your database backups, remove the package and re-install it."
-    echo "     You'll get some errors about existing database when websetup but it's okay."
-    echo "   o Once you upgraded all databases and went to the finish message, remove %{cent_global_prefix}/centreon/www/install or you'll loop in upgrade page."
-    echo "About the package:"
-    echo "   o This package will *NEVER* delete any database."
-    echo "   o This package will *NEVER* do database upgrades automaticaly."
-    echo "   o This package *CAN* be safely removed and re-installed."
-    echo "   o If you dont want automatic websetup to be run, create this file: %{cent_global_prefix}/centreon_webui_no_websetup"
+cat 1>&2 << EOF
+WARNING:
+   Websetup not made because of upgrade.
+   o If it is a primary installation, you can run websetup that way:
+. %{install_dir}/webinstall.sh && mv %{cent_global_prefix}/centreon/www/install %{cent_global_prefix}/centreon/www/install-$(date +%s)
+   o If it is an upgrade, go to the web interface and follow upgrade process.
+WEB UPGRADE:
+   o Depending of your current installation, SQL scripts can fail to upgrade.
+   o It *should* be safe to just comment lines that fails and refresh the upgrade to continue.
+   o However, always do a backup of centreon, centreon_storage and centreon_status *before* doing the upgrade.
+   o If you messed up your installation, you can safely restore your database backups, remove the package and re-install it.
+     You will get some errors about existing database when websetup but it is okay.
+   o Once you upgraded all databases and went to the finish message, remove %{cent_global_prefix}/centreon/www/install or you willll loop in upgrade page.
+About the package:
+   o This package will *NEVER* delete any database.
+   o This package will *NEVER* do database upgrades automaticaly.
+   o This package *CAN* be safely removed and re-installed.
+   o If you dont want automatic websetup to be run, create this file: %{cent_global_prefix}/centreon_webui_no_websetup
+EOF
+
 fi
+
 chkconfig httpd on
 chkconfig centcore on
 chkconfig centreontrapd on
