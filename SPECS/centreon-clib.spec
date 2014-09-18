@@ -1,7 +1,7 @@
 %define cent_global_prefix /usr/local/centreon-full/
 
 Name:		centreon-clib
-Version:	1.4.0
+Version:	1.4.1
 Release:	1%{?dist}
 Summary:	Centreon Clib
 

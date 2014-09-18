@@ -11,7 +11,7 @@
 
 Name:       centreon
 Version:    2.5.2
-Release:    21%{?dist}
+Release:    23%{?dist}
 Summary:    Centreon Web
 
 Group:      Centreon
@@ -60,6 +60,8 @@ Requires:   mailx
 Requires:   postfix
 Requires:   cronie
 Requires:   net-snmp
+Requires:   net-snmp-perl
+Requires:   perl-Net-SNMP
 Requires:   sudo
 Requires:   curl
 Requires:   httpd
@@ -346,10 +348,12 @@ rm -rf %{cent_global_prefix}/libexec/submit_service_check_result
 /var/lib/centreon/rrd/metrics
 /var/lib/centreon/rrd/status
 /var/log/centreon
+/var/spool/centreontrapd
 
 # setup www
 %defattr(0644,root,root,0755)
 %{cent_global_prefix}/centreon/GPL_LIB/
+%defattr(0755,root,root,0755)
 %{cent_global_prefix}/centreon/cron/
 %attr(0755,root,root) %dir %{cent_global_prefix}/centreon/www
 %{cent_global_prefix}/centreon/www/class
@@ -420,5 +424,8 @@ Centreon Plugins
 %{cent_global_prefix}/libexec/submit_service_check_result
 
 %changelog
+* Thu Sep 04 2014 Florent Peterschmitt <fpeterschmitt@capensis.fr>
+- Mostly permissions on crontabes
+- Fix revision 22 no embedding php libs (build failure)
 * Thu Aug 14 2014 Florent Peterschmitt <fpeterschmitt@capensis.fr>
 - Init

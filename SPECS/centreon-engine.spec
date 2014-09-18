@@ -4,7 +4,7 @@
 %define cent_engine_group   centreon-engine
 
 Name:		centreon-engine
-Version:	1.4.6
+Version:	1.4.7
 Release:	3%{?dist}
 Summary:	Centreon Engine
 
