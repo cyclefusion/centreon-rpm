@@ -11,7 +11,7 @@
 
 Name:       centreon
 Version:    2.5.2
-Release:    23%{?dist}
+Release:    24%{?dist}
 Summary:    Centreon Web
 
 Group:      Centreon
@@ -232,10 +232,12 @@ service centreontrapd start
 service snmptrapd start
 
 %preun
-service centcore stop
-service centreontrapd stop
-service snmptrapd stop
-pkill -9 -u %{cent_centreon_user} ||:
+if [ ! "$1" = "2" ]; then
+    service centcore stop
+    service centreontrapd stop
+    service snmptrapd stop
+    pkill -9 -u %{cent_centreon_user} ||:
+fi
 
 %postun
 if [ ! "$1" = "2" ]; then

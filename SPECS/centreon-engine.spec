@@ -5,7 +5,7 @@
 
 Name:		centreon-engine
 Version:	1.4.7
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	Centreon Engine
 
 Group:		Centreon
@@ -72,13 +72,17 @@ chown -R %{cent_engine_user}:%{cent_engine_group} /var/log/centreon-engine
 chkconfig centengine on
 
 %preun
-service centreon-engine stop ||:
-pkill -9 -u %{cent_engine_user} ||:
-chkconfig centengine off
+if [ ! "$1" = "2" ]; then
+    service centreon-engine stop ||:
+    pkill -9 -u %{cent_engine_user} ||:
+    chkconfig centengine off
+fi
 
 %postun
-userdel %{cent_engine_user}
-groupdel %{cent_engine_group} ||:
+if [ ! "$1" = "2" ]; then
+    userdel %{cent_engine_user}
+    groupdel %{cent_engine_group} ||:
+fi
 
 %files
 %defattr(0660,%{cent_engine_user},%{cent_engine_group},0770)
